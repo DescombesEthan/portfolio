@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio 3D</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400;700;900&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --fg:#f0ede6;
+  --fg2:#888;
+  --accent:#c8b89a;
+  --accent2:#e8d5b0;
+  --grid:rgba(255,255,255,0.04);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:'Space Grotesk',sans-serif;
+  cursor:none;
+  overflow-x:hidden;
+}
+
+/* CURSOR */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  border-radius:50%;background:var(--accent);
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width .25s,height .25s,background .25s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:44px;height:44px;
+  border-radius:50%;border:1px solid rgba(200,184,154,0.5);
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform .12s ease,width .3s,height .3s,border-color .3s;
+}
+body:has(a:hover) #cursor,body:has(.project:hover) #cursor{width:6px;height:6px}
+body:has(a:hover) #cursor-ring,body:has(.project:hover) #cursor-ring{width:80px;height:80px;border-color:var(--accent)}
+
+/* GRID BG */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;z-index:0;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:2rem 3rem;
+  mix-blend-mode:normal;
+}
+.nav-logo{
+  font-family:'Unbounded',sans-serif;
+  font-size:.7rem;font-weight:300;letter-spacing:.2em;
+  color:var(--fg);text-decoration:none;text-transform:uppercase;
+}
+.nav-links{display:flex;gap:3rem;list-style:none}
+.nav-links a{
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--fg2);text-decoration:none;cursor:none;
+  transition:color .3s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--accent);transition:width .4s;
+}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+
+/* HERO */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 3rem 4rem;z-index:1;
+  overflow:hidden;
+}
+.hero-bg-text{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(8rem,18vw,22rem);
+  font-weight:900;color:transparent;
+  -webkit-text-stroke:1px rgba(255,255,255,0.04);
+  pointer-events:none;white-space:nowrap;
+  letter-spacing:-.02em;
+  animation:bgTextDrift 20s ease-in-out infinite alternate;
+}
+@keyframes bgTextDrift{
+  from{transform:translate(-50%,-50%) translateX(-3%)}
+  to{transform:translate(-50%,-50%) translateX(3%)}
+}
+.hero-eyebrow{
+  font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--accent)}
+.hero-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(3.5rem,8vw,8rem);
+  font-weight:200;line-height:.95;
+  letter-spacing:-.03em;
+  margin-bottom:3rem;
+}
+.hero-title span{display:block}
+.hero-title .italic{
+  font-weight:700;font-style:italic;
+  color:var(--accent);
+}
+.hero-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+}
+.hero-desc{
+  font-size:.8rem;line-height:1.8;color:var(--fg2);
+  max-width:360px;
+}
+.hero-scroll{
+  display:flex;flex-direction:column;align-items:center;gap:.75rem;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--fg2);
+}
+.scroll-line{
+  width:1px;height:60px;background:linear-gradient(var(--accent),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{
+  0%,100%{opacity:.3;transform:scaleY(1)}
+  50%{opacity:1;transform:scaleY(1.2)}
+}
+
+/* MARQUEE */
+.marquee-wrap{
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  overflow:hidden;padding:.8rem 0;
+  position:relative;z-index:1;
+}
+.marquee-track{
+  display:flex;gap:0;
+  animation:marquee 30s linear infinite;
+  width:max-content;
+}
+.marquee-item{
+  font-family:'Unbounded',sans-serif;
+  font-size:.6rem;font-weight:300;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--fg2);
+  padding:0 3rem;white-space:nowrap;
+}
+.marquee-dot{color:var(--accent);padding:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* PROJECTS SECTION */
+.projects-section{position:relative;z-index:1;padding:6rem 3rem}
+.section-header{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:5rem;
+}
+.section-label{
+  font-family:'Unbounded',sans-serif;
+  font-size:.58rem;font-weight:300;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);
+}
+.section-count{
+  font-family:'Unbounded',sans-serif;
+  font-size:5rem;font-weight:900;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,0.12);
+  line-height:1;
+}
+
+/* PROJECT CARDS — full bleed horizontal */
+.project{
+  display:grid;grid-template-columns:1fr 2.5fr;
+  border-top:1px solid rgba(255,255,255,0.08);
+  min-height:520px;cursor:none;
+  transition:border-color .4s;
+}
+.project:last-child{border-bottom:1px solid rgba(255,255,255,0.08)}
+.project:hover{border-color:rgba(200,184,154,0.3)}
+
+.project-left{
+  padding:3rem;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border-right:1px solid rgba(255,255,255,0.08);
+  transition:border-color .4s;
+}
+.project:hover .project-left{border-color:rgba(200,184,154,0.15)}
+
+.project-index{
+  font-family:'Unbounded',sans-serif;
+  font-size:.55rem;font-weight:300;letter-spacing:.2em;color:var(--fg2);
+}
+.project-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(1.1rem,2vw,1.8rem);
+  font-weight:200;line-height:1;
+  letter-spacing:-.02em;
+}
+.project-title strong{font-weight:700;color:var(--accent)}
+.project-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem}
+.ptag{
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.3rem .7rem;border:1px solid rgba(255,255,255,0.12);color:var(--fg2);
+  transition:border-color .3s,color .3s;
+}
+.project:hover .ptag{border-color:rgba(200,184,154,0.4);color:var(--accent)}
+.project-meta{
+  font-size:.65rem;line-height:1.7;color:var(--fg2);
+  max-width:300px;
+}
+.project-arrow{
+  font-size:1.5rem;color:var(--fg2);
+  transition:transform .4s,color .4s;
+  display:inline-block;
+}
+.project:hover .project-arrow{transform:translate(6px,-6px);color:var(--accent)}
+
+.project-right{
+  position:relative;overflow:hidden;
+}
+.project-imgs{
+  position:absolute;inset:0;
+}
+.project-imgs img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  transition:opacity .7s ease, transform .8s ease;
+}
+.img-wire{opacity:1;transform:scale(1)}
+.img-rend{opacity:0;transform:scale(1.04)}
+.project:hover .img-wire{opacity:0;transform:scale(1.04)}
+.project:hover .img-rend{opacity:1;transform:scale(1)}
+.project-img-label{
+  position:absolute;bottom:1.25rem;right:1.25rem;z-index:2;
+  font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;
+  padding:.25rem .65rem;border:1px solid rgba(255,255,255,0.2);color:var(--fg2);
+  background:rgba(10,10,10,0.7);
+  transition:opacity .5s;
+}
+.label-wire{opacity:1}
+.label-rend{opacity:0;position:absolute;bottom:1.25rem;right:1.25rem}
+.project:hover .label-wire{opacity:0}
+.project:hover .label-rend{opacity:1}
+
+/* ABOUT */
+.about-section{
+  position:relative;z-index:1;
+  padding:6rem 3rem;
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;
+}
+.about-left h2{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2.5rem,5vw,5rem);
+  font-weight:200;line-height:1;letter-spacing:-.03em;
+  margin-bottom:2rem;
+}
+.about-left h2 em{
+  font-style:italic;font-weight:700;
+  display:block;color:var(--accent);
+}
+.about-text{
+  font-size:.82rem;line-height:1.9;color:var(--fg2);
+  max-width:420px;
+}
+.about-right{}
+.skills-title{
+  font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg2);margin-bottom:2rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.skills-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.skill-item{
+  display:flex;align-items:center;gap:1.5rem;
+  padding:1.25rem 0;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.skill-name{
+  font-size:.75rem;color:var(--fg);min-width:160px;
+}
+.skill-track{
+  flex:1;height:1px;background:rgba(255,255,255,0.08);position:relative;overflow:visible;
+}
+.skill-fill{
+  position:absolute;left:0;top:0;height:1px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  width:0;transition:width 1.4s cubic-bezier(.16,1,.3,1);
+}
+.skill-num{
+  font-family:'Unbounded',sans-serif;
+  font-size:.6rem;font-weight:300;color:var(--fg2);min-width:32px;text-align:right;
+}
+
+/* CONTACT */
+.contact-section{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding:6rem 3rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;
+}
+.contact-big{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(3rem,6vw,6rem);
+  font-weight:200;line-height:.9;letter-spacing:-.03em;
+  margin-bottom:2rem;
+}
+.contact-big em{
+  font-style:italic;font-weight:900;
+  display:block;color:var(--accent);
+}
+.contact-sub{font-size:.8rem;color:var(--fg2);line-height:1.8;max-width:340px}
+.cform{display:flex;flex-direction:column;gap:0}
+.cfield{
+  display:flex;flex-direction:column;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:1.5rem 0;transition:border-color .3s;
+}
+.cfield:focus-within{border-color:var(--accent)}
+.cfield label{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg2);margin-bottom:.75rem;
+  transition:color .3s;
+}
+.cfield:focus-within label{color:var(--accent)}
+.cfield input,.cfield textarea{
+  background:transparent;border:none;outline:none;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:.9rem;color:var(--fg);resize:none;
+}
+.cfield textarea{min-height:80px}
+.cfield input::placeholder,.cfield textarea::placeholder{color:rgba(255,255,255,0.15)}
+.csend{
+  margin-top:2.5rem;
+  display:inline-flex;align-items:center;gap:1rem;
+  font-family:'Unbounded',sans-serif;
+  font-size:.65rem;font-weight:300;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bg);background:var(--accent);
+  border:none;padding:1.1rem 2.5rem;cursor:none;
+  transition:background .3s,gap .3s;
+}
+.csend:hover{background:var(--accent2);gap:1.5rem}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding:2rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-copy{font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,0.2)}
+.footer-links{display:flex;gap:2rem}
+.footer-links a{
+  font-size:.6rem;letter-spacing:.1em;
+  color:rgba(255,255,255,0.25);text-decoration:none;
+  cursor:none;transition:color .3s;
+}
+.footer-links a:hover{color:var(--accent)}
+
+/* ANIM */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .8s ease,transform .8s ease;
+}
+.reveal.in{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+
+/* MODAL */
+.modal-wrap{
+  display:none;
+  position:fixed;inset:0;z-index:500;
+  background:rgba(10,10,10,0.96);
+  overflow-y:auto;padding:5rem 3rem 3rem;
+}
+.modal-wrap.open{display:block}
+.modal-close{
+  position:fixed;top:2rem;right:3rem;
+  font-family:'Unbounded',sans-serif;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg2);background:none;border:none;cursor:none;
+  transition:color .3s;
+}
+.modal-close:hover{color:var(--accent)}
+.m-num{font-size:.6rem;letter-spacing:.2em;color:var(--fg2);margin-bottom:1rem}
+.m-title{
+  font-family:'Unbounded',sans-serif;
+  font-size:clamp(2.5rem,5vw,5rem);
+  font-weight:200;line-height:1;letter-spacing:-.02em;
+  margin-bottom:.75rem;
+}
+.m-tags{display:flex;gap:.5rem;margin-bottom:3rem;flex-wrap:wrap}
+.m-imgs{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(255,255,255,0.06);
+  margin-bottom:3rem;
+}
+.m-img-wrap{overflow:hidden;position:relative}
+.m-img-lbl{
+  position:absolute;top:1rem;left:1rem;
+  font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;
+  padding:.25rem .6rem;background:rgba(10,10,10,0.8);color:var(--fg2);
+  border:1px solid rgba(255,255,255,0.12);
+}
+.m-imgs img{width:100%;display:block}
+.m-body{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:1rem}
+.m-desc{font-size:.8rem;line-height:1.9;color:var(--fg2)}
+.m-specs{display:flex;flex-direction:column;gap:1.5rem}
+.m-spec-label{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:.3rem}
+.m-spec-val{font-size:.8rem;color:var(--fg)}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <a class="nav-logo" href="#">DESCOMBES&nbsp;ETHAN</a>
+  <ul class="nav-links">
+    <li><a onclick="document.getElementById('projets').scrollIntoView({behavior:'smooth'})">Works</a></li>
+    <li><a onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">3D</div>
+  <div>
+    <div class="hero-eyebrow">3D Artist &nbsp;&nbsp; Paris, France &nbsp;&nbsp; 2024</div>
+    <h1 class="hero-title">
+      <span>DESCOMBES</span>
+      <span>ETHAN</span>
+      <span class="italic">&nbsp;</span>
+    </h1>
+  </div>
+  <div class="hero-bottom">
+    
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Maya</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Substance Painter</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">RenderMan</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Photoshop</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">3D Artist</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Cinematic Lighting</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Maya</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Substance Painter</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">RenderMan</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Photoshop</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">3D Artist</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Cinematic Lighting</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projets">
+  <div class="section-header reveal">
+    <span class="section-label">Selected works</span>
+    <span class="section-count">03</span>
+  </div>
+
+  <div class="project reveal" onclick="openModal(0)">
+    <div class="project-left">
+      <div>
+        <div class="project-index">01 / 03</div>
+      </div>
+      <div>
+        <h2 class="project-title">Bureau du<br><strong>Faussaire</strong></h2>
+      </div>
+      <div>
+        
+        <div style="margin-top:1.5rem">
+          <span class="project-arrow">↗</span>
+        </div>
+      </div>
+    </div>
+    <div class="project-right">
+      <div class="project-imgs">
+        <img class="img-wire" src="wireframe.jpg" alt="wireframe">
+        <img class="img-rend" src="JOUR_BEAUTY_FINAL_COMPO_03.jpg" alt="rendu">
+      </div>
+      <span class="project-img-label label-wire">Wireframe</span>
+      <span class="project-img-label label-rend" style="position:absolute;bottom:1.25rem;right:1.25rem;z-index:2;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .65rem;border:1px solid rgba(255,255,255,0.2);color:#888;background:rgba(10,10,10,0.7);transition:opacity .5s;opacity:0">Final render</span>
+    </div>
+  </div>
+
+  <div class="project reveal" onclick="openModal(1)">
+    <div class="project-left">
+      <div class="project-index">02 / 03</div>
+      <div>
+        <h2 class="project-title">Asics<br><strong>Gel-Venture</strong></h2>
+      </div>
+      <div>
+        
+        <div style="margin-top:1.5rem"><span class="project-arrow">↗</span></div>
+      </div>
+    </div>
+    <div class="project-right">
+      <div class="project-imgs">
+        <img class="img-wire" src="Wireframe_tennis.jpg" alt="wireframe">
+        <img class="img-rend" src="COMPO_TENNIS.jpg" alt="rendu">
+      </div>
+      <span class="project-img-label label-wire">Wireframe</span>
+      <span class="project-img-label label-rend" style="position:absolute;bottom:1.25rem;right:1.25rem;z-index:2;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .65rem;border:1px solid rgba(255,255,255,0.2);color:#888;background:rgba(10,10,10,0.7);transition:opacity .5s;opacity:0">Final render</span>
+    </div>
+  </div>
+
+  <div class="project reveal" onclick="openModal(2)">
+    <div class="project-left">
+      <div class="project-index">03 / 03</div>
+      <div>
+        <h2 class="project-title">Midland<br><strong>Talkie-Walkie</strong></h2>
+      </div>
+      <div>
+        
+        <div style="margin-top:1.5rem"><span class="project-arrow">↗</span></div>
+      </div>
+    </div>
+    <div class="project-right">
+      <div class="project-imgs">
+        <img class="img-wire" src="Beauty_Talkie_Tri_Wireframe.jpg" alt="wireframe">
+        <img class="img-rend" src="Beauty_Talkie_Tri_COMPO.jpg" alt="rendu">
+      </div>
+      <span class="project-img-label label-wire">Wireframe</span>
+      <span class="project-img-label label-rend" style="position:absolute;bottom:1.25rem;right:1.25rem;z-index:2;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;padding:.25rem .65rem;border:1px solid rgba(255,255,255,0.2);color:#888;background:rgba(10,10,10,0.7);transition:opacity .5s;opacity:0">Final render</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="reveal">
+    <div class="contact-big">Let's<br>work<br><em>together.</em></div>
+    
+  </div>
+  <div class="reveal reveal-delay-1">
+    <div class="cform">
+      <div class="cfield">
+        <label>Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="cfield">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="cfield">
+        <label>Project</label>
+        <textarea placeholder="Tell me about your project…"></textarea>
+      </div>
+    </div>
+    <button class="csend" onclick="alert('Message envoyé !')">
+      Envoyer <span>→</span>
+    </button>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2025 Descombes Ethan — All rights reserved</span>
+  <div class="footer-links">
+    <a href="#">Behance</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Instagram</a>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-wrap" id="modal">
+  <button class="modal-close" onclick="closeModal()">← Close</button>
+  <div id="modal-body"></div>
+</div>
+
+<script>
+const cx = document.getElementById('cursor');
+const cr = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cx.style.left=mx+'px';cx.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  cr.style.left=rx+'px';cr.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+const projects=[
+  {num:'01',title:'Bureau du Faussaire',
+   tags:['Scene','Old school','Storytelling','Blender + Cycles'],
+   desc:"Bureau d'un faussaire en plein rush — la scène raconte une urgence. Passeports éparpillés, lampe de banquier vert, cendrier débordant de mégots, flacon d'alcool, revolver à portée de main. Chaque objet est délibérément ancien pour ancrer l'ambiance dans les années 40-50. Le défi : rendre la surcharge du bureau lisible sans perdre la lecture narrative.",
+   soft:'Maya + RenderMan',poly:'2.4M polygones',year:'2024',
+   wire:'wireframe.jpg',rend:'JOUR_BEAUTY_FINAL_COMPO_03.jpg'},
+
+  {num:'02',title:'Asics Gel-Venture',
+   tags:['Texturing','Photorealism','Golden hour','Blender + Cycles'],
+   desc:"Exercice centré sur le texturing photoréaliste — l'objectif était de tromper l'œil. La scène reconstitue l'après-match : deux paires de chaussures posées sur le court en fin de journée, lacets défaits, semelles légèrement sales. La lumière rasante du golden hour accentue chaque détail de surface — coutures du mesh, micro-relief de la semelle EVA, reflets subtils des renforts TPU. Aucun raccourci sur les matériaux.",
+   soft:'Maya + RenderMan',poly:'1.1M polygones',year:'2024',
+   wire:'Wireframe_tennis.jpg',rend:'COMPO_TENNIS.jpg'},
+  {num:'03',title:'Midland Talkie-Walkie',
+   tags:['Topology','Shading','Lighting','Cinema 4D'],
+   desc:"Exercice de technicité pure. L'enjeu : modéliser un objet à la géométrie complexe — boutons, grilles, clips, antenne vissée — avec une topologie irréprochable, sans triangles parasites. Les UV sont unwrappés manuellement pour un contrôle total du shading. Travail approfondi sur le lighting pour révéler les volumes et les matières.",
+   soft:'Maya + RenderMan',poly:'320K polygones',year:'2024',
+   wire:'Beauty_Talkie_Tri_Wireframe.jpg',rend:'Beauty_Talkie_Tri_COMPO.jpg',
+   wire2:'Wireframe_default_talkie.jpg',rend2:'Beauty_Talkie_DEFAULT_COMPO.jpg'}
+];
+
+function openModal(i){
+  const p=projects[i];
+  const tags=p.tags.map(t=>`<span class="ptag">${t}</span>`).join('');
+  let extra='';
+  if(p.wire2){
+    extra=`<div class="m-imgs" style="margin-bottom:2rem">
+      <div class="m-img-wrap"><span class="m-img-lbl">4 views — wireframe</span><img src="${p.wire2}"></div>
+      <div class="m-img-wrap"><span class="m-img-lbl">4 views — final render</span><img src="${p.rend2}"></div>
+    </div>`;
+  }
+  document.getElementById('modal-body').innerHTML=`
+    <div class="m-num">${p.num} / 03</div>
+    <h2 class="m-title">${p.title}</h2>
+    <div class="m-imgs">
+      <div class="m-img-wrap"><span class="m-img-lbl">Wireframe</span><img src="${p.wire}"></div>
+      <div class="m-img-wrap"><span class="m-img-lbl">Final render</span><img src="${p.rend}"></div>
+    </div>
+    ${extra}
+    <div class="m-body">
+      <div class="m-specs">
+        <div><div class="m-spec-label">Software</div><div class="m-spec-val">${p.soft}</div></div>
+        <div><div class="m-spec-label">Complexity</div><div class="m-spec-val">${p.poly}</div></div>
+        <div><div class="m-spec-label">Year</div><div class="m-spec-val">${p.year}</div></div>
+      </div>
+    </div>`;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      e.target.querySelectorAll('.skill-fill[data-w]').forEach(b=>{
+        b.style.width=b.dataset.w+'%';
+      });
+    }
+  });
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
