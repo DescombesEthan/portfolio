@@ -760,63 +760,133 @@ controls.enablePan=false;
 controls.minDistance=1.5;
 controls.maxDistance=8;
 controls.autoRotate=true;
-controls.autoRotateSpeed=.6;
+controls.autoRotateSpeed=.5;
 canvas.addEventListener('pointerdown',()=>controls.autoRotate=false);
 
-// Lighting — cinematic
-const ambient=new THREE.AmbientLight(0xfff5e0,.4);
-scene.add(ambient);
+// Lighting
+const ambient=new THREE.AmbientLight(0xfff5e0,.4);scene.add(ambient);
+const key=new THREE.DirectionalLight(0xfff5e0,2);key.position.set(3,5,3);scene.add(key);
+const fill=new THREE.DirectionalLight(0xc4a882,.6);fill.position.set(-4,2,-2);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xe8d5b0,1.5);rim.position.set(0,3,-5);scene.add(rim);
 
-const key=new THREE.DirectionalLight(0xfff5e0,2);
-key.position.set(3,5,3);
-scene.add(key);
+// Panel config: name → image + project modal index
+const PANELS = {
+  'Panneau_01': { img:'Beauty_Talkie_DEFAULT_COMPO.jpg', idx:2, label:'Midland Talkie-Walkie' },
+  'Panneau_02': { img:'COMPO_TENNIS.jpg',               idx:1, label:'Asics Gel-Venture' },
+  'Panneau_03': { img:'JOUR_BEAUTY_FINAL_COMPO_03.jpg', idx:0, label:'Bureau du Faussaire' },
+};
 
-const fill=new THREE.DirectionalLight(0xc4a882,.6);
-fill.position.set(-4,2,-2);
-scene.add(fill);
+const texLoader=new THREE.TextureLoader();
+const panelMeshes=[];
+const originalMaterials=new Map();
+const hoverMaterials=new Map();
 
-const rim=new THREE.DirectionalLight(0xe8d5b0,1.5);
-rim.position.set(0,3,-5);
-scene.add(rim);
+// Preload textures and create hover materials
+Object.entries(PANELS).forEach(([name,cfg])=>{
+  texLoader.load(cfg.img, tex=>{
+    tex.colorSpace=THREE.SRGBColorSpace;
+    tex.flipY=false;
+    const mat=new THREE.MeshStandardMaterial({map:tex,roughness:.4,metalness:.1});
+    hoverMaterials.set(name,mat);
+  });
+});
 
-const floor=new THREE.DirectionalLight(0x222233,.3);
-floor.position.set(0,-3,0);
-scene.add(floor);
-
-// Load GLB
 const loader=new GLTFLoader();
 loader.load('Bar_test.glb',gltf=>{
   const model=gltf.scene;
-
-  // Center model
   const box=new THREE.Box3().setFromObject(model);
   const center=box.getCenter(new THREE.Vector3());
   const size=box.getSize(new THREE.Vector3());
   model.position.sub(center);
-
-  // Auto scale to fit view
   const maxDim=Math.max(size.x,size.y,size.z);
   if(maxDim>0) model.scale.setScalar(2/maxDim);
-
   scene.add(model);
 
-  // Enhance materials
   model.traverse(child=>{
-    if(child.isMesh && child.material){
-      child.material.envMapIntensity=0.8;
-      if(child.material.roughness!==undefined) child.material.roughness=Math.min(child.material.roughness+.1,.9);
+    if(child.isMesh){
+      if(PANELS[child.name]){
+        child.userData.panelName=child.name;
+        panelMeshes.push(child);
+        originalMaterials.set(child.name, child.material.clone());
+      }
     }
   });
-},undefined,err=>console.error('GLB load error:',err));
+},undefined,err=>console.error(err));
 
-// Resize
+// Raycaster for hover + click
+const raycaster=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
+let hoveredPanel=null;
+
+// Tooltip
+const tooltip=document.createElement('div');
+tooltip.style.cssText='position:fixed;pointer-events:none;display:none;font-family:Unbounded,sans-serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;padding:.4rem 1rem;background:rgba(8,8,8,.85);border:1px solid rgba(196,168,130,.4);color:#c4a882;z-index:999;transition:opacity .2s;backdrop-filter:blur(4px);';
+document.body.appendChild(tooltip);
+
+canvas.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+  mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(panelMeshes);
+
+  if(hits.length>0){
+    const name=hits[0].object.userData.panelName;
+    canvas.style.cursor='pointer';
+    // Show hover texture
+    if(hoveredPanel!==name){
+      // Restore previous
+      if(hoveredPanel){
+        const prev=panelMeshes.find(m=>m.userData.panelName===hoveredPanel);
+        if(prev) prev.material=originalMaterials.get(hoveredPanel);
+      }
+      hoveredPanel=name;
+      const mesh=hits[0].object;
+      const hm=hoverMaterials.get(name);
+      if(hm) mesh.material=hm;
+    }
+    tooltip.style.display='block';
+    tooltip.style.left=(e.clientX+16)+'px';
+    tooltip.style.top=(e.clientY-8)+'px';
+    tooltip.textContent=PANELS[name].label+' →';
+  } else {
+    canvas.style.cursor='default';
+    if(hoveredPanel){
+      const prev=panelMeshes.find(m=>m.userData.panelName===hoveredPanel);
+      if(prev) prev.material=originalMaterials.get(hoveredPanel);
+      hoveredPanel=null;
+    }
+    tooltip.style.display='none';
+  }
+});
+
+canvas.addEventListener('click',e=>{
+  const rect=canvas.getBoundingClientRect();
+  mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+  mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const hits=raycaster.intersectObjects(panelMeshes);
+  if(hits.length>0){
+    const name=hits[0].object.userData.panelName;
+    openModal(PANELS[name].idx);
+  }
+});
+
+canvas.addEventListener('mouseleave',()=>{
+  tooltip.style.display='none';
+  if(hoveredPanel){
+    const prev=panelMeshes.find(m=>m.userData.panelName===hoveredPanel);
+    if(prev) prev.material=originalMaterials.get(hoveredPanel);
+    hoveredPanel=null;
+  }
+});
+
 window.addEventListener('resize',()=>{
   renderer.setSize(wrap.clientWidth,wrap.clientHeight);
   camera.aspect=wrap.clientWidth/wrap.clientHeight;
   camera.updateProjectionMatrix();
 });
 
-// Animate
 (function animate(){
   requestAnimationFrame(animate);
   controls.update();
