@@ -804,6 +804,7 @@ loader.load('Bar_test.glb',gltf=>{
 
   model.traverse(child=>{
     if(child.isMesh){
+      console.log('MESH:', child.name, child.uuid);
       if(PANELS[child.name]){
         child.userData.panelName=child.name;
         panelMeshes.push(child);
