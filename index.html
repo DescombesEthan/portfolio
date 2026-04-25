@@ -322,7 +322,25 @@ nav{
 }
 .csend:hover{background:var(--accent);gap:2rem}
 
-/* FOOTER */
+/* 3D VIEWER */
+.viewer-section{position:relative;z-index:1;border-top:1px solid var(--border)}
+.viewer-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:3rem 3rem 2rem;
+}
+.viewer-hint{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fg3)}
+.viewer-wrap{
+  position:relative;width:100%;height:80vh;
+  background:radial-gradient(ellipse at center,#111 0%,#080808 100%);
+  overflow:hidden;
+}
+#three-canvas{width:100%;height:100%;display:block}
+.viewer-overlay-label{
+  position:absolute;bottom:2rem;left:3rem;
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--fg3);
+}
+
 footer{
   position:relative;z-index:1;
   border-top:1px solid var(--border);
@@ -545,6 +563,18 @@ footer{
 <!-- ABOUT -->
 
 
+<!-- 3D INTERACTIVE -->
+<section class="viewer-section" id="viewer">
+  <div class="viewer-header">
+    <span class="section-label">Interactive 3D</span>
+    <span class="viewer-hint">Drag to rotate &nbsp;·&nbsp; Scroll to zoom</span>
+  </div>
+  <div class="viewer-wrap">
+    <canvas id="three-canvas"></canvas>
+    <div class="viewer-overlay-label">Bar — Work in progress</div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section class="contact-section" id="contact">
   <div class="reveal">
@@ -700,6 +730,98 @@ async function submitForm(){
 }
 
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+const canvas=document.getElementById('three-canvas');
+const wrap=canvas.parentElement;
+
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.2;
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(45,wrap.clientWidth/wrap.clientHeight,.1,100);
+camera.position.set(0,1.5,4);
+
+const controls=new OrbitControls(camera,canvas);
+controls.enableDamping=true;
+controls.dampingFactor=.05;
+controls.enablePan=false;
+controls.minDistance=1.5;
+controls.maxDistance=8;
+controls.autoRotate=true;
+controls.autoRotateSpeed=.6;
+canvas.addEventListener('pointerdown',()=>controls.autoRotate=false);
+
+// Lighting — cinematic
+const ambient=new THREE.AmbientLight(0xfff5e0,.4);
+scene.add(ambient);
+
+const key=new THREE.DirectionalLight(0xfff5e0,2);
+key.position.set(3,5,3);
+scene.add(key);
+
+const fill=new THREE.DirectionalLight(0xc4a882,.6);
+fill.position.set(-4,2,-2);
+scene.add(fill);
+
+const rim=new THREE.DirectionalLight(0xe8d5b0,1.5);
+rim.position.set(0,3,-5);
+scene.add(rim);
+
+const floor=new THREE.DirectionalLight(0x222233,.3);
+floor.position.set(0,-3,0);
+scene.add(floor);
+
+// Load GLB
+const loader=new GLTFLoader();
+loader.load('Bar_test.glb',gltf=>{
+  const model=gltf.scene;
+
+  // Center model
+  const box=new THREE.Box3().setFromObject(model);
+  const center=box.getCenter(new THREE.Vector3());
+  const size=box.getSize(new THREE.Vector3());
+  model.position.sub(center);
+
+  // Auto scale to fit view
+  const maxDim=Math.max(size.x,size.y,size.z);
+  if(maxDim>0) model.scale.setScalar(2/maxDim);
+
+  scene.add(model);
+
+  // Enhance materials
+  model.traverse(child=>{
+    if(child.isMesh && child.material){
+      child.material.envMapIntensity=0.8;
+      if(child.material.roughness!==undefined) child.material.roughness=Math.min(child.material.roughness+.1,.9);
+    }
+  });
+},undefined,err=>console.error('GLB load error:',err));
+
+// Resize
+window.addEventListener('resize',()=>{
+  renderer.setSize(wrap.clientWidth,wrap.clientHeight);
+  camera.aspect=wrap.clientWidth/wrap.clientHeight;
+  camera.updateProjectionMatrix();
+});
+
+// Animate
+(function animate(){
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene,camera);
+})();
 </script>
 </body>
 </html>
