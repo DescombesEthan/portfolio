@@ -197,6 +197,52 @@
   }
   .contact-links a:hover{color:var(--accent); border-color:var(--accent);}
   .foot-meta{font-size:0.65rem; color:var(--fg-faint); letter-spacing:0.06em;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:1000;
+    background:rgba(12,11,8,0.94);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:clamp(1rem,4vw,3rem);
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    position:relative; max-width:1400px; max-height:90vh;
+    width:100%; display:flex; flex-direction:column; align-items:center; gap:1rem;
+  }
+  .lightbox-img-wrap{
+    position:relative; width:100%; flex:1; min-height:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox img{
+    max-width:100%; max-height:78vh; object-fit:contain;
+    border:1px solid var(--border-strong);
+  }
+  .lightbox-label{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .lb-close{
+    position:absolute; top:-2.6rem; right:0;
+    background:none; border:1px solid var(--border-strong);
+    color:var(--fg); width:2.4rem; height:2.4rem; cursor:pointer;
+    font-size:1.1rem; font-family:'IBM Plex Mono',monospace;
+    transition:border-color .2s, color .2s;
+  }
+  .lb-close:hover{border-color:var(--accent); color:var(--accent);}
+  .lb-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(21,19,15,0.55); border:1px solid var(--border-strong);
+    color:var(--fg); width:2.8rem; height:2.8rem; cursor:pointer;
+    font-size:1.2rem; font-family:'IBM Plex Mono',monospace;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, color .2s, background .2s;
+  }
+  .lb-arrow:hover{border-color:var(--accent); color:var(--accent); background:rgba(21,19,15,0.85);}
+  .lb-prev{left:0.5rem;}
+  .lb-next{right:0.5rem;}
+  .lb-arrow[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -236,7 +282,9 @@
 <div class="projects">
 
   <div class="project">
-    <div class="project-visual slider">
+    <div class="project-visual slider"
+      data-lb-srcs="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png|2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png"
+      data-lb-labels="Vue 1|Vue 2">
       <img class="img-a" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png" alt="Cohabitation colocation — vue 1">
       <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Cohabitation colocation — vue 2">
       <span class="visual-tag">Vue 1 ↔ Vue 2</span>
@@ -256,7 +304,9 @@
   </div>
 
   <div class="project reverse">
-    <div class="project-visual">
+    <div class="project-visual"
+      data-lb-srcs="BUREAU_FINAL.jpg|WIREFRAME.jpg"
+      data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="BUREAU_FINAL.jpg" alt="Le bureau — rendu final">
       <img class="img-wire" src="WIREFRAME.jpg" alt="Le bureau — wireframe">
       <span class="visual-tag">Wireframe ↔ Rendu</span>
@@ -276,7 +326,9 @@
   </div>
 
   <div class="project">
-    <div class="project-visual">
+    <div class="project-visual"
+      data-lb-srcs="NATURE_MORTE_FINAL.jpg|NATURE_MORTE_WIREFRAME.jpg"
+      data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="NATURE_MORTE_FINAL.jpg" alt="Bureau de détective — rendu final">
       <img class="img-wire" src="NATURE_MORTE_WIREFRAME.jpg" alt="Bureau de détective — wireframe">
       <span class="visual-tag">Wireframe ↔ Rendu</span>
@@ -298,7 +350,9 @@
   </div>
 
   <div class="project">
-    <div class="project-visual">
+    <div class="project-visual"
+      data-lb-srcs="COMPO_TENNIS.jpg|Wireframe_tennis.jpg"
+      data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="COMPO_TENNIS.jpg" alt="Sneakers — rendu final">
       <img class="img-wire" src="Wireframe_tennis.jpg" alt="Sneakers — wireframe">
       <span class="visual-tag">Wireframe ↔ Rendu</span>
@@ -322,7 +376,8 @@
 </div>
 
 <div class="side-note" id="petit-dej">
-  <img src="PDJ_PBH.png" alt="Petit-déjeuner — rendu">
+  <img src="PDJ_PBH.png" alt="Petit-déjeuner — rendu" class="lb-single"
+    data-lb-srcs="PDJ_PBH.png" data-lb-labels="Rendu" style="cursor:pointer;">
   <div class="side-note-text">
     <div class="project-index">05 — Étude</div>
     <h3>Petit-déjeuner</h3>
@@ -342,6 +397,75 @@
     <div class="foot-meta">© 2026 Ethan Descombes — Tous droits réservés</div>
   </div>
 </footer>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Précédent">←</button>
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+    <button class="lb-arrow lb-next" id="lbNext" aria-label="Suivant">→</button>
+    <div class="lightbox-label" id="lbLabel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbLabel = document.getElementById('lbLabel');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+  const lbClose = document.getElementById('lbClose');
+
+  let images = [];
+  let labels = [];
+  let index = 0;
+
+  function show(i){
+    index = (i + images.length) % images.length;
+    lbImg.src = images[index];
+    lbLabel.textContent = labels[index] || '';
+    const multi = images.length > 1;
+    lbPrev.hidden = !multi;
+    lbNext.hidden = !multi;
+  }
+
+  function openLightbox(srcs, labs, startIndex){
+    images = srcs;
+    labels = labs;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    show(startIndex || 0);
+  }
+
+  function closeLightbox(){
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-lb-srcs]').forEach(function(el){
+    el.addEventListener('click', function(){
+      const srcs = el.getAttribute('data-lb-srcs').split('|');
+      const labs = (el.getAttribute('data-lb-labels') || '').split('|');
+      openLightbox(srcs, labs, 0);
+    });
+  });
+
+  lbPrev.addEventListener('click', function(e){ e.stopPropagation(); show(index - 1); });
+  lbNext.addEventListener('click', function(e){ e.stopPropagation(); show(index + 1); });
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLightbox(); });
+
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+})();
+</script>
 
 </body>
 </html>
