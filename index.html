@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethan Descombes — Portfolio 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15130f;
+    --surface:#1d1a15;
+    --surface2:#242019;
+    --fg:#ece7dc;
+    --fg-dim:#928a78;
+    --fg-faint:#5c5648;
+    --accent:#c39a5c;
+    --accent-dim:#7a6640;
+    --border:rgba(236,231,220,0.09);
+    --border-strong:rgba(236,231,220,0.18);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Mono',monospace;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--bg);}
+
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:400;letter-spacing:-0.01em;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem clamp(1.5rem,5vw,3.5rem);
+    background:rgba(21,19,15,0.75);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-mark{
+    font-family:'Fraunces',serif; font-size:1.05rem; letter-spacing:0.02em;
+    color:var(--fg); text-decoration:none;
+  }
+  .nav-mark span{color:var(--accent);}
+  .nav-links{display:flex; gap:2.2rem; list-style:none;}
+  .nav-links a{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--fg-dim); text-decoration:none; transition:color .25s;
+  }
+  .nav-links a:hover{color:var(--accent);}
+  .nav-links{display:none;}
+  @media(min-width:720px){.nav-links{display:flex;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative;
+    padding:clamp(1.5rem,5vw,3.5rem);
+    background:
+      linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 55%, var(--bg) 100%),
+      url('NATURE_MORTE_FINAL.jpg') center 30% / cover no-repeat;
+  }
+  .hero-eyebrow{
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:1.2rem;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,7vw,5.2rem);
+    line-height:1.02;
+    max-width:16ch;
+    color:var(--fg);
+  }
+  .hero h1 em{font-style:italic; color:var(--accent); font-weight:300;}
+  .hero-sub{
+    margin-top:1.6rem; max-width:46ch;
+    font-size:0.92rem; line-height:1.7; color:var(--fg-dim);
+  }
+  .hero-meta{
+    margin-top:2.6rem; display:flex; gap:2.5rem; flex-wrap:wrap;
+    font-size:0.68rem; letter-spacing:0.08em; color:var(--fg-faint);
+    text-transform:uppercase;
+  }
+  .hero-meta b{display:block; color:var(--fg-dim); font-size:0.72rem; margin-bottom:0.3rem; letter-spacing:0.05em;}
+  .scroll-hint{
+    position:absolute; bottom:2rem; right:clamp(1.5rem,5vw,3.5rem);
+    font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fg-faint);
+    writing-mode:vertical-rl;
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:6rem clamp(1.5rem,5vw,3.5rem);}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:3rem; gap:2rem; flex-wrap:wrap;
+    border-bottom:1px solid var(--border); padding-bottom:1.5rem;
+  }
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);}
+  .section-num{
+    font-size:0.7rem; color:var(--fg-faint); letter-spacing:0.12em;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects{display:flex; flex-direction:column; gap:1px; background:var(--border);}
+  .project{
+    background:var(--bg);
+    display:grid; grid-template-columns:1fr;
+    gap:0;
+  }
+  @media(min-width:860px){
+    .project{grid-template-columns:1.15fr 1fr;}
+    .project.reverse{grid-template-columns:1fr 1.15fr;}
+    .project.reverse .project-visual{order:2;}
+    .project.reverse .project-info{order:1;}
+  }
+  .project-visual{
+    position:relative; overflow:hidden; aspect-ratio:16/11;
+    background:var(--surface); cursor:pointer;
+  }
+  .project-visual img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:opacity .5s ease;
+  }
+  .project-visual .img-wire{opacity:0;}
+  .project-visual:hover .img-wire{opacity:1;}
+  .project-visual:hover .img-final{opacity:0;}
+  .visual-tag{
+    position:absolute; bottom:1rem; left:1rem; z-index:2;
+    font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase;
+    background:rgba(21,19,15,0.7); color:var(--fg-dim);
+    padding:0.4rem 0.7rem; border:1px solid var(--border-strong);
+    pointer-events:none;
+  }
+  .project-info{
+    padding:clamp(1.8rem,4vw,3.2rem);
+    display:flex; flex-direction:column; justify-content:center;
+    background:var(--surface);
+  }
+  .project-index{font-size:0.7rem; color:var(--accent); letter-spacing:0.1em; margin-bottom:0.9rem;}
+  .project-info h3{font-size:clamp(1.5rem,2.6vw,2.1rem); margin-bottom:1rem;}
+  .project-desc{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:42ch;}
+  .project-specs{
+    margin-top:1.6rem; display:flex; flex-wrap:wrap; gap:0.6rem;
+  }
+  .spec-tag{
+    font-size:0.62rem; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--fg-faint); border:1px solid var(--border-strong);
+    padding:0.35rem 0.65rem;
+  }
+
+  /* two-image toggle project (cohabitation) */
+  .project-visual.slider .img-b{opacity:0;}
+  .project-visual.slider:hover .img-b{opacity:1;}
+  .project-visual.slider:hover .img-a{opacity:0;}
+
+  /* ---------- MISC GRID (petit-dej) ---------- */
+  .side-note{
+    padding:5rem clamp(1.5rem,5vw,3.5rem);
+    display:grid; grid-template-columns:1fr; gap:2.5rem;
+    border-top:1px solid var(--border);
+  }
+  @media(min-width:860px){.side-note{grid-template-columns:1fr 1fr; align-items:center;}}
+  .side-note img{width:100%; display:block; border:1px solid var(--border-strong);}
+  .side-note-text .project-index{color:var(--accent);}
+  .side-note-text h3{font-size:1.6rem; margin-bottom:0.8rem;}
+  .side-note-text p{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:38ch;}
+
+  /* ---------- CONTACT ---------- */
+  footer{
+    padding:6rem clamp(1.5rem,5vw,3.5rem) 3rem;
+    border-top:1px solid var(--border);
+    display:flex; flex-direction:column; gap:2.5rem;
+  }
+  footer h2{font-size:clamp(2rem,5vw,3.4rem); max-width:14ch;}
+  .contact-row{
+    display:flex; flex-wrap:wrap; gap:2.5rem; justify-content:space-between; align-items:flex-end;
+  }
+  .contact-links{display:flex; flex-direction:column; gap:0.6rem;}
+  .contact-links a{
+    color:var(--fg); text-decoration:none; font-size:0.95rem;
+    border-bottom:1px solid var(--border-strong); padding-bottom:0.15rem; width:fit-content;
+    transition:color .2s, border-color .2s;
+  }
+  .contact-links a:hover{color:var(--accent); border-color:var(--accent);}
+  .foot-meta{font-size:0.65rem; color:var(--fg-faint); letter-spacing:0.06em;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top" class="nav-mark">Ethan <span>Descombes</span></a>
+  <ul class="nav-links">
+    <li><a href="#travaux">Travaux</a></li>
+    <li><a href="#petit-dej">Extra</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Portfolio — Modélisation &amp; rendu 3D</div>
+  <h1>Des objets <em>ordinaires</em>,<br>rendus avec précision.</h1>
+  <p class="hero-sub">
+    [Texte provisoire] Étudiant en 3D, je modélise et texture des objets du quotidien
+    jusqu'au photoréalisme — du wireframe au rendu final. Ce portfolio réunit une sélection
+    de mes derniers projets.
+  </p>
+  <div class="hero-meta">
+    <div><b>Focus</b>Hard-surface &amp; texturing</div>
+    <div><b>Outils</b>Blender · Substance Painter</div>
+    <div><b>Base</b>[Ville, France]</div>
+  </div>
+  <div class="scroll-hint">Scroll ↓</div>
+</section>
+
+<section class="section" id="travaux">
+  <div class="section-head">
+    <h2>Sélection de travaux</h2>
+    <div class="section-num">Survolez une image pour voir le wireframe</div>
+  </div>
+</section>
+
+<div class="projects">
+
+  <div class="project">
+    <div class="project-visual">
+      <img class="img-final" src="NATURE_MORTE_FINAL.jpg" alt="Bureau de détective — rendu final">
+      <img class="img-wire" src="NATURE_MORTE_WIREFRAME.jpg" alt="Bureau de détective — wireframe">
+      <span class="visual-tag">Wireframe ↔ Rendu</span>
+    </div>
+    <div class="project-info">
+      <div class="project-index">01 — Nature morte</div>
+      <h3>Bureau du détective</h3>
+      <p class="project-desc">
+        [Texte provisoire] Scène complète composée d'une vingtaine d'objets — lampe de bureau,
+        montre à gousset, revolver, carnet, tasse — assemblés pour raconter une histoire à
+        travers le détail et l'éclairage.
+      </p>
+      <div class="project-specs">
+        <span class="spec-tag">Scene composition</span>
+        <span class="spec-tag">Hard-surface</span>
+        <span class="spec-tag">Lighting</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project reverse">
+    <div class="project-visual">
+      <img class="img-final" src="JOUR_BEAUTY_FINAL.jpg" alt="Talkie-walkies — rendu final">
+      <img class="img-wire" src="WIREFRAME.jpg" alt="Talkie-walkies — wireframe">
+      <span class="visual-tag">Wireframe ↔ Rendu</span>
+    </div>
+    <div class="project-info">
+      <div class="project-index">02 — Produit</div>
+      <h3>Talkie-walkie Midland</h3>
+      <p class="project-desc">
+        [Texte provisoire] Étude produit d'un talkie-walkie professionnel — modélisation
+        détaillée des boutons, de l'écran et de l'antenne, avec un travail de texturing
+        usé/vieilli sur la coque plastique.
+      </p>
+      <div class="project-specs">
+        <span class="spec-tag">Product design</span>
+        <span class="spec-tag">Texturing PBR</span>
+        <span class="spec-tag">4 vues</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project">
+    <div class="project-visual">
+      <img class="img-final" src="COMPO_TENNIS.jpg" alt="Sneakers — rendu final">
+      <img class="img-wire" src="Wireframe_tennis.jpg" alt="Sneakers — wireframe">
+      <span class="visual-tag">Wireframe ↔ Rendu</span>
+    </div>
+    <div class="project-info">
+      <div class="project-index">03 — Produit</div>
+      <h3>Asics Gel-Venture</h3>
+      <p class="project-desc">
+        [Texte provisoire] Paire de sneakers modélisée en topologie propre, avec un accent
+        particulier sur les lacets et la semelle. Mise en scène golden hour sur un terrain
+        de sport extérieur.
+      </p>
+      <div class="project-specs">
+        <span class="spec-tag">Organic + hard-surface</span>
+        <span class="spec-tag">Cloth simulation</span>
+        <span class="spec-tag">Outdoor lighting</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="project reverse">
+    <div class="project-visual slider">
+      <img class="img-a" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png" alt="Cohabitation colocation — vue 1">
+      <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Cohabitation colocation — vue 2">
+      <span class="visual-tag">Vue 1 ↔ Vue 2</span>
+    </div>
+    <div class="project-info">
+      <div class="project-index">04 — Scène</div>
+      <h3>Cohabitation / Colocation</h3>
+      <p class="project-desc">
+        [Texte provisoire] Projet scolaire 2026 (IFA) autour de la cohabitation en colocation —
+        composition d'une scène d'intérieur avec deux angles de vue distincts.
+      </p>
+      <div class="project-specs">
+        <span class="spec-tag">Scene composition</span>
+        <span class="spec-tag">Projet école — IFA 2026</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="side-note" id="petit-dej">
+  <img src="PDJ_PBH.png" alt="Petit-déjeuner — rendu">
+  <div class="side-note-text">
+    <div class="project-index">05 — Étude</div>
+    <h3>Petit-déjeuner</h3>
+    <p>[Texte provisoire] Étude de composition autour d'une scène de petit-déjeuner — travail
+    sur les matières (verre, céramique, pain) et la lumière du matin.</p>
+  </div>
+</div>
+
+<footer id="contact">
+  <h2>Discutons de votre prochain projet.</h2>
+  <div class="contact-row">
+    <div class="contact-links">
+      <a href="mailto:contact@ethandescombes.com">contact@ethandescombes.com</a>
+      <a href="#">LinkedIn ↗</a>
+      <a href="#">ArtStation ↗</a>
+    </div>
+    <div class="foot-meta">© 2026 Ethan Descombes — Tous droits réservés</div>
+  </div>
+</footer>
+
+</body>
+</html>
