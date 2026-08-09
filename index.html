@@ -118,12 +118,15 @@
     .project.reverse .project-info{order:1;}
   }
   .project-visual{
-    position:relative; overflow:hidden; aspect-ratio:16/11;
+    position:relative; overflow:hidden;
     background:var(--surface); cursor:pointer;
   }
   .project-visual img{
-    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    display:block; width:100%; height:auto;
     transition:opacity .5s ease;
+  }
+  .project-visual .img-wire, .project-visual .img-b{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   }
   .project-visual .img-wire{opacity:0;}
   .project-visual:hover .img-wire{opacity:1;}
