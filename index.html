@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ethan Descombes — Portfolio 3D</title>
+<title>Ethan Descombes — 3D Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -200,18 +200,23 @@
   .side-note-text p{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:38ch;}
   .side-note-text .project-specs{margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:0.6rem;}
 
-  /* ---------- PHOTOGRAPHIE ---------- */
+  /* ---------- PHOTOGRAPHY ---------- */
   .gallery{
     padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:1.4rem;
+    column-count:1;
+    column-gap:2.4rem;
   }
+  @media(min-width:640px){.gallery{column-count:2;}}
+  @media(min-width:1000px){.gallery{column-count:3;}}
+  @media(min-width:1400px){.gallery{column-count:4;}}
   .gallery figure{
+    break-inside:avoid;
+    margin:0 0 2.4rem 0;
     background:var(--surface); border:1px solid var(--border);
     overflow:hidden; cursor:pointer;
   }
-  .gallery img{width:100%; height:100%; object-fit:cover; display:block; aspect-ratio:4/5; transition:transform .4s ease;}
-  .gallery figure:hover img{transform:scale(1.04);}
+  .gallery img{width:100%; height:auto; display:block; transition:transform .5s ease, opacity .3s ease;}
+  .gallery figure:hover img{transform:scale(1.02); opacity:0.92;}
   .gallery-empty{
     padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
     color:var(--fg-faint); font-size:0.85rem;
@@ -288,7 +293,7 @@
 <nav>
   <a href="#top" class="nav-mark">Ethan <span>Descombes</span></a>
   <ul class="nav-links">
-    <li><a href="#travaux">Travaux</a></li>
+    <li><a href="#travaux">Work</a></li>
     <li><a href="#petit-dej">Extra</a></li>
     <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -296,11 +301,11 @@
 </nav>
 
 <section class="hero" id="top">
-  <div class="hero-eyebrow">Portfolio — Artist 3D</div>
-  <h1>Bienvenue <em>chez moi</em>.</h1>
+  <div class="hero-eyebrow">Portfolio — 3D Artist</div>
+  <h1>Welcome <em>to my world</em>.</h1>
   <p class="hero-sub">
-    Étudiant en 3D en 2ème année à l'ESMA de Nantes, passionné et motivé. Ici, vous
-    pourrez découvrir mes travaux et mon univers.
+    3D student, second year at ESMA Nantes, passionate and driven. Here, you can
+    discover my work and my universe.
   </p>
   <div class="scroll-hint">Scroll ↓</div>
 </section>
@@ -319,17 +324,17 @@
   <div class="project">
     <div class="project-visual slider"
       data-lb-srcs="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png|2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png"
-      data-lb-labels="Vue 1|Vue 2">
+      data-lb-labels="View 1|View 2">
       <img class="img-a" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png" alt="Cohabitation colocation — vue 1">
       <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Le marin — vue 2">
     </div>
     <div class="project-info">
-      <div class="project-index">01 — Scène</div>
-      <h3>Le jeune désemparé</h3>
+      <div class="project-index">01 — Scene</div>
+      <h3>The Lost Sailor</h3>
       <p class="project-desc">
-        Projet de fin de première année (école) : réaliser une image 3D déclinée en deux
-        cadrages. Un marin sombre dans la dépression après avoir perdu son meilleur ami,
-        au moment même où un jeune matelot le rejoint en plein drame.
+        End-of-first-year school project: create a 3D image declined into two framings.
+        A sailor sinks into depression after losing his best friend, right as a young
+        crewmate joins him in the middle of the tragedy.
       </p>
       <div class="project-specs">
         <span class="spec-tag">Maya</span>
@@ -344,16 +349,16 @@
   <div class="project reverse">
     <div class="project-visual"
       data-lb-srcs="BUREAU_FINAL.jpg|WIREFRAME.jpg"
-      data-lb-labels="Rendu|Wireframe">
+      data-lb-labels="Render|Wireframe">
       <img class="img-final" src="BUREAU_FINAL.jpg" alt="Le bureau — rendu final">
       <img class="img-wire" src="WIREFRAME.jpg" alt="Le bureau — wireframe">
     </div>
     <div class="project-info">
-      <div class="project-index">02 — Scène</div>
-      <h3>Le bureau</h3>
+      <div class="project-index">02 — Scene</div>
+      <h3>The Desk</h3>
       <p class="project-desc">
-        Projet d'école. J'ai voulu recréer le bureau d'un faussaire, avec de faux
-        passeports de mes amis en guise de clin d'œil.
+        School project. I wanted to recreate a forger's desk, with fake passports of
+        my friends as a nod.
       </p>
       <div class="project-specs">
         <span class="spec-tag">Maya</span>
@@ -367,16 +372,16 @@
   <div class="project">
     <div class="project-visual"
       data-lb-srcs="NATURE_MORTE_FINAL.jpg|NATURE_MORTE_WIREFRAME.jpg"
-      data-lb-labels="Rendu|Wireframe">
+      data-lb-labels="Render|Wireframe">
       <img class="img-final" src="NATURE_MORTE_FINAL.jpg" alt="Bureau de détective — rendu final">
       <img class="img-wire" src="NATURE_MORTE_WIREFRAME.jpg" alt="Bureau de détective — wireframe">
     </div>
     <div class="project-info">
-      <div class="project-index">03 — Nature morte</div>
-      <h3>Vanité</h3>
+      <div class="project-index">03 — Still life</div>
+      <h3>Vanitas</h3>
       <p class="project-desc">
-        Un clin d'œil à Caravage, à travers l'un de ses tableaux et une image très
-        contrastée, en clair-obscur. C'est un artiste que j'aime beaucoup.
+        A nod to Caravaggio, through one of his paintings and a very high-contrast
+        image, in chiaroscuro. He's an artist I really admire.
       </p>
       <div class="project-specs">
         <span class="spec-tag">Maya</span>
@@ -391,15 +396,15 @@
   <div class="project">
     <div class="project-visual"
       data-lb-srcs="COMPO_TENNIS.jpg|Wireframe_tennis.jpg"
-      data-lb-labels="Rendu|Wireframe">
+      data-lb-labels="Render|Wireframe">
       <img class="img-final" src="COMPO_TENNIS.jpg" alt="Sneakers — rendu final">
       <img class="img-wire" src="Wireframe_tennis.jpg" alt="Sneakers — wireframe">
     </div>
     <div class="project-info">
-      <div class="project-index">04 — Produit</div>
-      <h3>Chaussures</h3>
+      <div class="project-index">04 — Product</div>
+      <h3>Sneakers</h3>
       <p class="project-desc">
-        Exercice purement technique : l'objectif était d'être le plus réaliste possible.
+        A purely technical exercise: the goal was to be as realistic as possible.
       </p>
       <div class="project-specs">
         <span class="spec-tag">Maya</span>
@@ -414,13 +419,13 @@
 
 <div class="side-note" id="petit-dej">
   <img src="PDJ_PBH.png" alt="Petit-déjeuner — rendu" class="lb-single"
-    data-lb-srcs="PDJ_PBH.png" data-lb-labels="Rendu" style="cursor:pointer;">
+    data-lb-srcs="PDJ_PBH.png" data-lb-labels="Render" style="cursor:pointer;">
   <div class="side-note-text">
-    <div class="project-index">05 — Étude</div>
-    <h3>Petit-déjeuner</h3>
-    <p>L'exercice consistait à réaliser un petit-déjeuner sur le thème de notre choix.
-    J'ai voulu représenter une routine matinale en apparence classique, que je viens
-    rompre par la présence de pilules — et notamment une pilule bleue.</p>
+    <div class="project-index">05 — Study</div>
+    <h3>Breakfast</h3>
+    <p>The brief was to create a breakfast scene on a theme of our choice. I wanted to
+    depict a seemingly ordinary morning routine, then break it with the presence of
+    pills — one blue pill in particular.</p>
     <div class="project-specs">
       <span class="spec-tag">Maya</span>
       <span class="spec-tag">RenderMan</span>
@@ -433,65 +438,65 @@
 
 <div class="tab-panel" id="panel-photo">
 <div class="gallery" id="gallery">
-  <figure><img src="photo-01.jpg" alt="Photographie 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
-  <figure><img src="photo-02.jpg" alt="Photographie 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
-  <figure><img src="photo-03.jpg" alt="Photographie 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
-  <figure><img src="photo-04.jpg" alt="Photographie 4" data-lb-srcs="photo-04.jpg" data-lb-labels="Photo 4"></figure>
-  <figure><img src="photo-05.jpg" alt="Photographie 5" data-lb-srcs="photo-05.jpg" data-lb-labels="Photo 5"></figure>
-  <figure><img src="photo-06.jpg" alt="Photographie 6" data-lb-srcs="photo-06.jpg" data-lb-labels="Photo 6"></figure>
-  <figure><img src="photo-07.jpg" alt="Photographie 7" data-lb-srcs="photo-07.jpg" data-lb-labels="Photo 7"></figure>
-  <figure><img src="photo-08.jpg" alt="Photographie 8" data-lb-srcs="photo-08.jpg" data-lb-labels="Photo 8"></figure>
-  <figure><img src="photo-09.jpg" alt="Photographie 9" data-lb-srcs="photo-09.jpg" data-lb-labels="Photo 9"></figure>
-  <figure><img src="photo-10.jpg" alt="Photographie 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
-  <figure><img src="photo-11.jpg" alt="Photographie 11" data-lb-srcs="photo-11.jpg" data-lb-labels="Photo 11"></figure>
-  <figure><img src="photo-12.jpg" alt="Photographie 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
-  <figure><img src="photo-13.jpg" alt="Photographie 13" data-lb-srcs="photo-13.jpg" data-lb-labels="Photo 13"></figure>
-  <figure><img src="photo-14.jpg" alt="Photographie 14" data-lb-srcs="photo-14.jpg" data-lb-labels="Photo 14"></figure>
-  <figure><img src="photo-15.jpg" alt="Photographie 15" data-lb-srcs="photo-15.jpg" data-lb-labels="Photo 15"></figure>
-  <figure><img src="photo-16.jpg" alt="Photographie 16" data-lb-srcs="photo-16.jpg" data-lb-labels="Photo 16"></figure>
-  <figure><img src="photo-17.jpg" alt="Photographie 17" data-lb-srcs="photo-17.jpg" data-lb-labels="Photo 17"></figure>
-  <figure><img src="photo-18.jpg" alt="Photographie 18" data-lb-srcs="photo-18.jpg" data-lb-labels="Photo 18"></figure>
-  <figure><img src="photo-19.jpg" alt="Photographie 19" data-lb-srcs="photo-19.jpg" data-lb-labels="Photo 19"></figure>
-  <figure><img src="photo-20.jpg" alt="Photographie 20" data-lb-srcs="photo-20.jpg" data-lb-labels="Photo 20"></figure>
-  <figure><img src="photo-21.jpg" alt="Photographie 21" data-lb-srcs="photo-21.jpg" data-lb-labels="Photo 21"></figure>
-  <figure><img src="photo-22.jpg" alt="Photographie 22" data-lb-srcs="photo-22.jpg" data-lb-labels="Photo 22"></figure>
-  <figure><img src="photo-23.jpg" alt="Photographie 23" data-lb-srcs="photo-23.jpg" data-lb-labels="Photo 23"></figure>
-  <figure><img src="photo-24.jpg" alt="Photographie 24" data-lb-srcs="photo-24.jpg" data-lb-labels="Photo 24"></figure>
-  <figure><img src="photo-25.jpg" alt="Photographie 25" data-lb-srcs="photo-25.jpg" data-lb-labels="Photo 25"></figure>
-  <figure><img src="photo-26.jpg" alt="Photographie 26" data-lb-srcs="photo-26.jpg" data-lb-labels="Photo 26"></figure>
-  <figure><img src="photo-27.jpg" alt="Photographie 27" data-lb-srcs="photo-27.jpg" data-lb-labels="Photo 27"></figure>
-  <figure><img src="photo-28.jpg" alt="Photographie 28" data-lb-srcs="photo-28.jpg" data-lb-labels="Photo 28"></figure>
-  <figure><img src="photo-29.jpg" alt="Photographie 29" data-lb-srcs="photo-29.jpg" data-lb-labels="Photo 29"></figure>
-  <figure><img src="photo-30.jpg" alt="Photographie 30" data-lb-srcs="photo-30.jpg" data-lb-labels="Photo 30"></figure>
-  <figure><img src="photo-31.jpg" alt="Photographie 31" data-lb-srcs="photo-31.jpg" data-lb-labels="Photo 31"></figure>
-  <figure><img src="photo-32.jpg" alt="Photographie 32" data-lb-srcs="photo-32.jpg" data-lb-labels="Photo 32"></figure>
-  <figure><img src="photo-33.jpg" alt="Photographie 33" data-lb-srcs="photo-33.jpg" data-lb-labels="Photo 33"></figure>
-  <figure><img src="photo-34.jpg" alt="Photographie 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
-  <figure><img src="photo-35.jpg" alt="Photographie 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
-  <figure><img src="photo-36.jpg" alt="Photographie 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
+  <figure><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
+  <figure><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
+  <figure><img src="photo-03.jpg" alt="Photograph 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
+  <figure><img src="photo-04.jpg" alt="Photograph 4" data-lb-srcs="photo-04.jpg" data-lb-labels="Photo 4"></figure>
+  <figure><img src="photo-05.jpg" alt="Photograph 5" data-lb-srcs="photo-05.jpg" data-lb-labels="Photo 5"></figure>
+  <figure><img src="photo-06.jpg" alt="Photograph 6" data-lb-srcs="photo-06.jpg" data-lb-labels="Photo 6"></figure>
+  <figure><img src="photo-07.jpg" alt="Photograph 7" data-lb-srcs="photo-07.jpg" data-lb-labels="Photo 7"></figure>
+  <figure><img src="photo-08.jpg" alt="Photograph 8" data-lb-srcs="photo-08.jpg" data-lb-labels="Photo 8"></figure>
+  <figure><img src="photo-09.jpg" alt="Photograph 9" data-lb-srcs="photo-09.jpg" data-lb-labels="Photo 9"></figure>
+  <figure><img src="photo-10.jpg" alt="Photograph 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
+  <figure><img src="photo-11.jpg" alt="Photograph 11" data-lb-srcs="photo-11.jpg" data-lb-labels="Photo 11"></figure>
+  <figure><img src="photo-12.jpg" alt="Photograph 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
+  <figure><img src="photo-13.jpg" alt="Photograph 13" data-lb-srcs="photo-13.jpg" data-lb-labels="Photo 13"></figure>
+  <figure><img src="photo-14.jpg" alt="Photograph 14" data-lb-srcs="photo-14.jpg" data-lb-labels="Photo 14"></figure>
+  <figure><img src="photo-15.jpg" alt="Photograph 15" data-lb-srcs="photo-15.jpg" data-lb-labels="Photo 15"></figure>
+  <figure><img src="photo-16.jpg" alt="Photograph 16" data-lb-srcs="photo-16.jpg" data-lb-labels="Photo 16"></figure>
+  <figure><img src="photo-17.jpg" alt="Photograph 17" data-lb-srcs="photo-17.jpg" data-lb-labels="Photo 17"></figure>
+  <figure><img src="photo-18.jpg" alt="Photograph 18" data-lb-srcs="photo-18.jpg" data-lb-labels="Photo 18"></figure>
+  <figure><img src="photo-19.jpg" alt="Photograph 19" data-lb-srcs="photo-19.jpg" data-lb-labels="Photo 19"></figure>
+  <figure><img src="photo-20.jpg" alt="Photograph 20" data-lb-srcs="photo-20.jpg" data-lb-labels="Photo 20"></figure>
+  <figure><img src="photo-21.jpg" alt="Photograph 21" data-lb-srcs="photo-21.jpg" data-lb-labels="Photo 21"></figure>
+  <figure><img src="photo-22.jpg" alt="Photograph 22" data-lb-srcs="photo-22.jpg" data-lb-labels="Photo 22"></figure>
+  <figure><img src="photo-23.jpg" alt="Photograph 23" data-lb-srcs="photo-23.jpg" data-lb-labels="Photo 23"></figure>
+  <figure><img src="photo-24.jpg" alt="Photograph 24" data-lb-srcs="photo-24.jpg" data-lb-labels="Photo 24"></figure>
+  <figure><img src="photo-25.jpg" alt="Photograph 25" data-lb-srcs="photo-25.jpg" data-lb-labels="Photo 25"></figure>
+  <figure><img src="photo-26.jpg" alt="Photograph 26" data-lb-srcs="photo-26.jpg" data-lb-labels="Photo 26"></figure>
+  <figure><img src="photo-27.jpg" alt="Photograph 27" data-lb-srcs="photo-27.jpg" data-lb-labels="Photo 27"></figure>
+  <figure><img src="photo-28.jpg" alt="Photograph 28" data-lb-srcs="photo-28.jpg" data-lb-labels="Photo 28"></figure>
+  <figure><img src="photo-29.jpg" alt="Photograph 29" data-lb-srcs="photo-29.jpg" data-lb-labels="Photo 29"></figure>
+  <figure><img src="photo-30.jpg" alt="Photograph 30" data-lb-srcs="photo-30.jpg" data-lb-labels="Photo 30"></figure>
+  <figure><img src="photo-31.jpg" alt="Photograph 31" data-lb-srcs="photo-31.jpg" data-lb-labels="Photo 31"></figure>
+  <figure><img src="photo-32.jpg" alt="Photograph 32" data-lb-srcs="photo-32.jpg" data-lb-labels="Photo 32"></figure>
+  <figure><img src="photo-33.jpg" alt="Photograph 33" data-lb-srcs="photo-33.jpg" data-lb-labels="Photo 33"></figure>
+  <figure><img src="photo-34.jpg" alt="Photograph 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
+  <figure><img src="photo-35.jpg" alt="Photograph 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
+  <figure><img src="photo-36.jpg" alt="Photograph 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
 </div>
 </div>
 
 <footer id="contact">
-  <h2>Discutons de votre prochain projet.</h2>
+  <h2>Let's talk about your next project.</h2>
   <div class="contact-row">
     <div class="contact-links">
       <a href="mailto:contact@ethandescombes.com">contact@ethandescombes.com</a>
       <a href="#">LinkedIn ↗</a>
       <a href="#">ArtStation ↗</a>
     </div>
-    <div class="foot-meta">© 2026 Ethan Descombes — Tous droits réservés</div>
+    <div class="foot-meta">© 2026 Ethan Descombes — All rights reserved</div>
   </div>
 </footer>
 
 <div class="lightbox" id="lightbox">
   <div class="lightbox-inner">
-    <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
-    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Précédent">←</button>
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous">←</button>
     <div class="lightbox-img-wrap">
       <img id="lbImg" src="" alt="">
     </div>
-    <button class="lb-arrow lb-next" id="lbNext" aria-label="Suivant">→</button>
+    <button class="lb-arrow lb-next" id="lbNext" aria-label="Next">→</button>
     <div class="lightbox-label" id="lbLabel"></div>
   </div>
 </div>
