@@ -19,6 +19,21 @@
     --border:rgba(236,231,220,0.09);
     --border-strong:rgba(236,231,220,0.18);
   }
+  body.photo-mode{
+    --bg:#f7f5f0;
+    --surface:#ffffff;
+    --surface2:#efece4;
+    --fg:#1c1a15;
+    --fg-dim:#5b5648;
+    --fg-faint:#9b9484;
+    --accent:#a97c3f;
+    --accent-dim:#c39a5c;
+    --border:rgba(20,18,14,0.10);
+    --border-strong:rgba(20,18,14,0.18);
+  }
+  body, nav, .hero, footer, .tab-panel, .project, .project-info, .gallery figure, .tabs{
+    transition:background-color .5s ease, color .5s ease, border-color .5s ease;
+  }
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -37,9 +52,10 @@
     position:fixed; top:0; left:0; right:0; z-index:100;
     display:flex; justify-content:space-between; align-items:center;
     padding:1.6rem clamp(1.5rem,5vw,3.5rem);
-    background:rgba(21,19,15,0.75);
+    background:color-mix(in srgb, var(--bg) 75%, transparent);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--border);
+    transition:background-color .5s ease, border-color .5s ease;
   }
   .nav-left{display:flex; align-items:center; gap:1.6rem;}
   .nav-mark{
@@ -73,18 +89,18 @@
   }
   .hero-eyebrow{
     font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:1.2rem;
+    color:#d9a85a; margin-bottom:1.2rem;
   }
   .hero h1{
     font-size:clamp(2.4rem,7vw,5.2rem);
     line-height:1.02;
     max-width:16ch;
-    color:var(--fg);
+    color:#f6f3ec;
   }
-  .hero h1 em{font-style:italic; color:var(--accent); font-weight:300;}
+  .hero h1 em{font-style:italic; color:#d9a85a; font-weight:300;}
   .hero-sub{
     margin-top:1.6rem; max-width:46ch;
-    font-size:0.92rem; line-height:1.7; color:var(--fg-dim);
+    font-size:0.92rem; line-height:1.7; color:rgba(246,243,236,0.78);
   }
   .hero-meta{
     margin-top:2.6rem; display:flex; gap:2.5rem; flex-wrap:wrap;
@@ -94,7 +110,7 @@
   .hero-meta b{display:block; color:var(--fg-dim); font-size:0.72rem; margin-bottom:0.3rem; letter-spacing:0.05em;}
   .scroll-hint{
     position:absolute; bottom:2rem; right:clamp(1.5rem,5vw,3.5rem);
-    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent);
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:#d9a85a;
     writing-mode:vertical-rl;
     display:flex; align-items:center; gap:0.6rem;
     animation:scrollBounce 2s ease-in-out infinite;
@@ -225,15 +241,15 @@
   }
   .photo-hero-eyebrow{
     font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:1.2rem;
+    color:#d9a85a; margin-bottom:1.2rem;
   }
   .photo-hero h2{
-    font-size:clamp(2rem,6vw,4rem); line-height:1.03; color:var(--fg); max-width:16ch;
+    font-size:clamp(2rem,6vw,4rem); line-height:1.03; color:#f6f3ec; max-width:16ch;
   }
-  .photo-hero h2 em{font-style:italic; color:var(--accent); font-weight:300;}
+  .photo-hero h2 em{font-style:italic; color:#d9a85a; font-weight:300;}
   .photo-hero p{
     margin-top:1.2rem; max-width:44ch;
-    font-size:0.88rem; line-height:1.7; color:var(--fg-dim);
+    font-size:0.88rem; line-height:1.7; color:rgba(246,243,236,0.78);
   }
 
   .gallery{
@@ -250,7 +266,7 @@
   }
   .gallery figure.landscape{grid-column:span 2;}
   @media(max-width:640px){.gallery figure.landscape{grid-column:span 1;}}
-  .gallery img{width:100%; height:auto; display:block; transition:transform .5s ease, opacity .3s ease;}
+  .gallery img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease, opacity .3s ease;}
   .gallery figure:hover img{transform:scale(1.02); opacity:0.92;}
   .gallery-empty{
     padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
@@ -477,8 +493,7 @@
 <div class="photo-hero">
   <div class="photo-hero-eyebrow">Photography</div>
   <h2>Somewhere <em>else</em>.</h2>
-  <p>A personal collection of moments — travels, light, and things I stop to look at
-  outside of 3D.</p>
+  <p>A quieter side of what I see — travels and everyday light, away from 3D.</p>
 </div>
 
 <div class="gallery" id="gallery">
@@ -524,7 +539,7 @@
   <h2>Let's talk about your next project.</h2>
   <div class="contact-row">
     <div class="contact-links">
-      <a href="mailto:contact@ethandescombes.com">contact@ethandescombes.com</a>
+      <a href="mailto:e.descombes.pro@gmail.com">e.descombes.pro@gmail.com</a>
       <a href="#">LinkedIn ↗</a>
       <a href="#">ArtStation ↗</a>
     </div>
@@ -552,6 +567,7 @@
   function activateTab(targetId){
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
     panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
+    document.body.classList.toggle('photo-mode', targetId === 'panel-photo');
     if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
       setTimeout(window.__layoutPhotoGrid, 50);
     }
