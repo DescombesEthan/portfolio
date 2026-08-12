@@ -103,6 +103,26 @@
   .section-num{
     font-size:0.7rem; color:var(--fg-faint); letter-spacing:0.12em;
   }
+  .tabs{
+    display:flex; gap:2.5rem;
+    padding:0 clamp(1.5rem,5vw,3.5rem);
+    margin-bottom:3rem;
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    background:none; border:none; cursor:pointer;
+    font-family:'Fraunces',serif; font-weight:400; letter-spacing:-0.01em;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    color:var(--fg-faint);
+    padding:0 0 1.5rem 0;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    transition:color .25s, border-color .25s;
+  }
+  .tab:hover{color:var(--fg-dim);}
+  .tab.active{color:var(--fg); border-bottom-color:var(--accent);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
 
   /* ---------- PROJECTS ---------- */
   .projects{display:flex; flex-direction:column; gap:clamp(2.5rem,5vw,5rem); padding:0 clamp(1.5rem,5vw,3.5rem);}
@@ -178,6 +198,24 @@
   .side-note-text .project-index{color:var(--accent);}
   .side-note-text h3{font-size:1.6rem; margin-bottom:0.8rem;}
   .side-note-text p{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:38ch;}
+  .side-note-text .project-specs{margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:0.6rem;}
+
+  /* ---------- PHOTOGRAPHIE ---------- */
+  .gallery{
+    padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:1.4rem;
+  }
+  .gallery figure{
+    background:var(--surface); border:1px solid var(--border);
+    overflow:hidden; cursor:pointer;
+  }
+  .gallery img{width:100%; height:100%; object-fit:cover; display:block; aspect-ratio:4/5; transition:transform .4s ease;}
+  .gallery figure:hover img{transform:scale(1.04);}
+  .gallery-empty{
+    padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
+    color:var(--fg-faint); font-size:0.85rem;
+  }
 
   /* ---------- CONTACT ---------- */
   footer{
@@ -252,32 +290,29 @@
   <ul class="nav-links">
     <li><a href="#travaux">Travaux</a></li>
     <li><a href="#petit-dej">Extra</a></li>
+    <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
 <section class="hero" id="top">
-  <div class="hero-eyebrow">Portfolio — Modélisation &amp; rendu 3D</div>
-  <h1>Des objets <em>ordinaires</em>,<br>rendus avec précision.</h1>
+  <div class="hero-eyebrow">Portfolio — Artist 3D</div>
+  <h1>Bienvenue <em>chez moi</em>.</h1>
   <p class="hero-sub">
-    [Texte provisoire] Étudiant en 3D, je modélise et texture des objets du quotidien
-    jusqu'au photoréalisme — du wireframe au rendu final. Ce portfolio réunit une sélection
-    de mes derniers projets.
+    Étudiant en 3D en 2ème année à l'ESMA de Nantes, passionné et motivé. Ici, vous
+    pourrez découvrir mes travaux et mon univers.
   </p>
-  <div class="hero-meta">
-    <div><b>Focus</b>Hard-surface &amp; texturing</div>
-    <div><b>Outils</b>Blender · Substance Painter</div>
-    <div><b>Base</b>[Ville, France]</div>
-  </div>
   <div class="scroll-hint">Scroll ↓</div>
 </section>
 
 <section class="section" id="travaux">
-  <div class="section-head">
-    <h2>Sélection de travaux</h2>
-    <div class="section-num">Survolez une image pour voir le wireframe</div>
+  <div class="tabs">
+    <button class="tab active" id="tabWork" data-target="panel-work">3D Work</button>
+    <button class="tab" id="tabPhoto" data-target="panel-photo">Photo</button>
   </div>
 </section>
+
+<div class="tab-panel active" id="panel-work">
 
 <div class="projects">
 
@@ -286,19 +321,22 @@
       data-lb-srcs="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png|2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png"
       data-lb-labels="Vue 1|Vue 2">
       <img class="img-a" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png" alt="Cohabitation colocation — vue 1">
-      <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Cohabitation colocation — vue 2">
-      <span class="visual-tag">Vue 1 ↔ Vue 2</span>
+      <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Le marin — vue 2">
     </div>
     <div class="project-info">
       <div class="project-index">01 — Scène</div>
-      <h3>Cohabitation / Colocation</h3>
+      <h3>Le jeune désemparé</h3>
       <p class="project-desc">
-        [Texte provisoire] Projet scolaire 2026 (IFA) autour de la cohabitation en colocation —
-        composition d'une scène d'intérieur avec deux angles de vue distincts.
+        Projet de fin de première année (école) : réaliser une image 3D déclinée en deux
+        cadrages. Un marin sombre dans la dépression après avoir perdu son meilleur ami,
+        au moment même où un jeune matelot le rejoint en plein drame.
       </p>
       <div class="project-specs">
-        <span class="spec-tag">Scene composition</span>
-        <span class="spec-tag">Projet école — IFA 2026</span>
+        <span class="spec-tag">Maya</span>
+        <span class="spec-tag">RenderMan</span>
+        <span class="spec-tag">Marvelous Designer</span>
+        <span class="spec-tag">Substance Painter</span>
+        <span class="spec-tag">Photoshop</span>
       </div>
     </div>
   </div>
@@ -309,18 +347,19 @@
       data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="BUREAU_FINAL.jpg" alt="Le bureau — rendu final">
       <img class="img-wire" src="WIREFRAME.jpg" alt="Le bureau — wireframe">
-      <span class="visual-tag">Wireframe ↔ Rendu</span>
     </div>
     <div class="project-info">
       <div class="project-index">02 — Scène</div>
       <h3>Le bureau</h3>
       <p class="project-desc">
-        [Texte provisoire] Composition d'une scène de bureau, travaillée en lumière de jour —
-        étude des matières et de l'éclairage naturel sur l'ensemble des objets de la scène.
+        Projet d'école. J'ai voulu recréer le bureau d'un faussaire, avec de faux
+        passeports de mes amis en guise de clin d'œil.
       </p>
       <div class="project-specs">
-        <span class="spec-tag">Scene composition</span>
-        <span class="spec-tag">Lighting</span>
+        <span class="spec-tag">Maya</span>
+        <span class="spec-tag">RenderMan</span>
+        <span class="spec-tag">Substance Painter</span>
+        <span class="spec-tag">Photoshop</span>
       </div>
     </div>
   </div>
@@ -331,20 +370,20 @@
       data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="NATURE_MORTE_FINAL.jpg" alt="Bureau de détective — rendu final">
       <img class="img-wire" src="NATURE_MORTE_WIREFRAME.jpg" alt="Bureau de détective — wireframe">
-      <span class="visual-tag">Wireframe ↔ Rendu</span>
     </div>
     <div class="project-info">
       <div class="project-index">03 — Nature morte</div>
-      <h3>Bureau du détective</h3>
+      <h3>Vanité</h3>
       <p class="project-desc">
-        [Texte provisoire] Scène complète composée d'une vingtaine d'objets — lampe de bureau,
-        montre à gousset, revolver, carnet, tasse — assemblés pour raconter une histoire à
-        travers le détail et l'éclairage.
+        Un clin d'œil à Caravage, à travers l'un de ses tableaux et une image très
+        contrastée, en clair-obscur. C'est un artiste que j'aime beaucoup.
       </p>
       <div class="project-specs">
-        <span class="spec-tag">Scene composition</span>
-        <span class="spec-tag">Hard-surface</span>
-        <span class="spec-tag">Lighting</span>
+        <span class="spec-tag">Maya</span>
+        <span class="spec-tag">RenderMan</span>
+        <span class="spec-tag">Marvelous Designer</span>
+        <span class="spec-tag">Substance Painter</span>
+        <span class="spec-tag">Photoshop</span>
       </div>
     </div>
   </div>
@@ -355,20 +394,18 @@
       data-lb-labels="Rendu|Wireframe">
       <img class="img-final" src="COMPO_TENNIS.jpg" alt="Sneakers — rendu final">
       <img class="img-wire" src="Wireframe_tennis.jpg" alt="Sneakers — wireframe">
-      <span class="visual-tag">Wireframe ↔ Rendu</span>
     </div>
     <div class="project-info">
       <div class="project-index">04 — Produit</div>
-      <h3>Asics Gel-Venture</h3>
+      <h3>Chaussures</h3>
       <p class="project-desc">
-        [Texte provisoire] Paire de sneakers modélisée en topologie propre, avec un accent
-        particulier sur les lacets et la semelle. Mise en scène golden hour sur un terrain
-        de sport extérieur.
+        Exercice purement technique : l'objectif était d'être le plus réaliste possible.
       </p>
       <div class="project-specs">
-        <span class="spec-tag">Organic + hard-surface</span>
-        <span class="spec-tag">Cloth simulation</span>
-        <span class="spec-tag">Outdoor lighting</span>
+        <span class="spec-tag">Maya</span>
+        <span class="spec-tag">RenderMan</span>
+        <span class="spec-tag">Substance Painter</span>
+        <span class="spec-tag">Photoshop</span>
       </div>
     </div>
   </div>
@@ -381,9 +418,58 @@
   <div class="side-note-text">
     <div class="project-index">05 — Étude</div>
     <h3>Petit-déjeuner</h3>
-    <p>[Texte provisoire] Étude de composition autour d'une scène de petit-déjeuner — travail
-    sur les matières (verre, céramique, pain) et la lumière du matin.</p>
+    <p>L'exercice consistait à réaliser un petit-déjeuner sur le thème de notre choix.
+    J'ai voulu représenter une routine matinale en apparence classique, que je viens
+    rompre par la présence de pilules — et notamment une pilule bleue.</p>
+    <div class="project-specs">
+      <span class="spec-tag">Maya</span>
+      <span class="spec-tag">RenderMan</span>
+      <span class="spec-tag">Substance Painter</span>
+      <span class="spec-tag">Photoshop</span>
+    </div>
   </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-photo">
+<div class="gallery" id="gallery">
+  <figure><img src="photo-01.jpg" alt="Photographie 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
+  <figure><img src="photo-02.jpg" alt="Photographie 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
+  <figure><img src="photo-03.jpg" alt="Photographie 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
+  <figure><img src="photo-04.jpg" alt="Photographie 4" data-lb-srcs="photo-04.jpg" data-lb-labels="Photo 4"></figure>
+  <figure><img src="photo-05.jpg" alt="Photographie 5" data-lb-srcs="photo-05.jpg" data-lb-labels="Photo 5"></figure>
+  <figure><img src="photo-06.jpg" alt="Photographie 6" data-lb-srcs="photo-06.jpg" data-lb-labels="Photo 6"></figure>
+  <figure><img src="photo-07.jpg" alt="Photographie 7" data-lb-srcs="photo-07.jpg" data-lb-labels="Photo 7"></figure>
+  <figure><img src="photo-08.jpg" alt="Photographie 8" data-lb-srcs="photo-08.jpg" data-lb-labels="Photo 8"></figure>
+  <figure><img src="photo-09.jpg" alt="Photographie 9" data-lb-srcs="photo-09.jpg" data-lb-labels="Photo 9"></figure>
+  <figure><img src="photo-10.jpg" alt="Photographie 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
+  <figure><img src="photo-11.jpg" alt="Photographie 11" data-lb-srcs="photo-11.jpg" data-lb-labels="Photo 11"></figure>
+  <figure><img src="photo-12.jpg" alt="Photographie 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
+  <figure><img src="photo-13.jpg" alt="Photographie 13" data-lb-srcs="photo-13.jpg" data-lb-labels="Photo 13"></figure>
+  <figure><img src="photo-14.jpg" alt="Photographie 14" data-lb-srcs="photo-14.jpg" data-lb-labels="Photo 14"></figure>
+  <figure><img src="photo-15.jpg" alt="Photographie 15" data-lb-srcs="photo-15.jpg" data-lb-labels="Photo 15"></figure>
+  <figure><img src="photo-16.jpg" alt="Photographie 16" data-lb-srcs="photo-16.jpg" data-lb-labels="Photo 16"></figure>
+  <figure><img src="photo-17.jpg" alt="Photographie 17" data-lb-srcs="photo-17.jpg" data-lb-labels="Photo 17"></figure>
+  <figure><img src="photo-18.jpg" alt="Photographie 18" data-lb-srcs="photo-18.jpg" data-lb-labels="Photo 18"></figure>
+  <figure><img src="photo-19.jpg" alt="Photographie 19" data-lb-srcs="photo-19.jpg" data-lb-labels="Photo 19"></figure>
+  <figure><img src="photo-20.jpg" alt="Photographie 20" data-lb-srcs="photo-20.jpg" data-lb-labels="Photo 20"></figure>
+  <figure><img src="photo-21.jpg" alt="Photographie 21" data-lb-srcs="photo-21.jpg" data-lb-labels="Photo 21"></figure>
+  <figure><img src="photo-22.jpg" alt="Photographie 22" data-lb-srcs="photo-22.jpg" data-lb-labels="Photo 22"></figure>
+  <figure><img src="photo-23.jpg" alt="Photographie 23" data-lb-srcs="photo-23.jpg" data-lb-labels="Photo 23"></figure>
+  <figure><img src="photo-24.jpg" alt="Photographie 24" data-lb-srcs="photo-24.jpg" data-lb-labels="Photo 24"></figure>
+  <figure><img src="photo-25.jpg" alt="Photographie 25" data-lb-srcs="photo-25.jpg" data-lb-labels="Photo 25"></figure>
+  <figure><img src="photo-26.jpg" alt="Photographie 26" data-lb-srcs="photo-26.jpg" data-lb-labels="Photo 26"></figure>
+  <figure><img src="photo-27.jpg" alt="Photographie 27" data-lb-srcs="photo-27.jpg" data-lb-labels="Photo 27"></figure>
+  <figure><img src="photo-28.jpg" alt="Photographie 28" data-lb-srcs="photo-28.jpg" data-lb-labels="Photo 28"></figure>
+  <figure><img src="photo-29.jpg" alt="Photographie 29" data-lb-srcs="photo-29.jpg" data-lb-labels="Photo 29"></figure>
+  <figure><img src="photo-30.jpg" alt="Photographie 30" data-lb-srcs="photo-30.jpg" data-lb-labels="Photo 30"></figure>
+  <figure><img src="photo-31.jpg" alt="Photographie 31" data-lb-srcs="photo-31.jpg" data-lb-labels="Photo 31"></figure>
+  <figure><img src="photo-32.jpg" alt="Photographie 32" data-lb-srcs="photo-32.jpg" data-lb-labels="Photo 32"></figure>
+  <figure><img src="photo-33.jpg" alt="Photographie 33" data-lb-srcs="photo-33.jpg" data-lb-labels="Photo 33"></figure>
+  <figure><img src="photo-34.jpg" alt="Photographie 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
+  <figure><img src="photo-35.jpg" alt="Photographie 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
+  <figure><img src="photo-36.jpg" alt="Photographie 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
+</div>
 </div>
 
 <footer id="contact">
@@ -411,6 +497,23 @@
 </div>
 
 <script>
+(function(){
+  // Tabs: 3D Work / Photo
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.tab-panel');
+  function activateTab(targetId){
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ activateTab(t.dataset.target); });
+  });
+  const navPhotoLink = document.getElementById('navPhotoLink');
+  if (navPhotoLink){
+    navPhotoLink.addEventListener('click', function(){ activateTab('panel-photo'); });
+  }
+})();
+
 (function(){
   const lb = document.getElementById('lightbox');
   const lbImg = document.getElementById('lbImg');
