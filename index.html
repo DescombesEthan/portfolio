@@ -202,14 +202,14 @@
 
   /* ---------- PHOTOGRAPHY ---------- */
   .photo-hero{
-    min-height:60vh;
+    min-height:82vh;
     display:flex; flex-direction:column; justify-content:flex-end;
     position:relative;
     padding:clamp(1.5rem,5vw,3.5rem);
     margin-bottom:4rem;
     background:
-      linear-gradient(180deg, rgba(21,19,15,0.2) 0%, rgba(21,19,15,0.6) 60%, var(--bg) 100%),
-      url('photo-07.jpg') center 40% / cover no-repeat;
+      linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 65%, var(--bg) 100%),
+      url('photo-07.jpg') center 65% / cover no-repeat;
   }
   .photo-hero-eyebrow{
     font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
@@ -229,7 +229,8 @@
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
     grid-auto-flow:dense;
-    gap:1.8rem;
+    grid-auto-rows:8px;
+    gap:24px;
   }
   .gallery figure{
     background:var(--surface); border:1px solid var(--border);
@@ -469,16 +470,15 @@
 
 <div class="gallery" id="gallery">
   <figure class="photo-item"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
-  <figure class="photo-item landscape"><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
+  <figure class="photo-item"><img src="photo-10.jpg" alt="Photograph 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
+  <figure class="photo-item landscape"><img src="photo-12.jpg" alt="Photograph 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
   <figure class="photo-item"><img src="photo-03.jpg" alt="Photograph 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
   <figure class="photo-item"><img src="photo-04.jpg" alt="Photograph 4" data-lb-srcs="photo-04.jpg" data-lb-labels="Photo 4"></figure>
   <figure class="photo-item"><img src="photo-05.jpg" alt="Photograph 5" data-lb-srcs="photo-05.jpg" data-lb-labels="Photo 5"></figure>
   <figure class="photo-item landscape"><img src="photo-06.jpg" alt="Photograph 6" data-lb-srcs="photo-06.jpg" data-lb-labels="Photo 6"></figure>
   <figure class="photo-item landscape"><img src="photo-08.jpg" alt="Photograph 8" data-lb-srcs="photo-08.jpg" data-lb-labels="Photo 8"></figure>
   <figure class="photo-item"><img src="photo-09.jpg" alt="Photograph 9" data-lb-srcs="photo-09.jpg" data-lb-labels="Photo 9"></figure>
-  <figure class="photo-item"><img src="photo-10.jpg" alt="Photograph 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
   <figure class="photo-item"><img src="photo-11.jpg" alt="Photograph 11" data-lb-srcs="photo-11.jpg" data-lb-labels="Photo 11"></figure>
-  <figure class="photo-item landscape"><img src="photo-12.jpg" alt="Photograph 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
   <figure class="photo-item landscape"><img src="photo-13.jpg" alt="Photograph 13" data-lb-srcs="photo-13.jpg" data-lb-labels="Photo 13"></figure>
   <figure class="photo-item"><img src="photo-14.jpg" alt="Photograph 14" data-lb-srcs="photo-14.jpg" data-lb-labels="Photo 14"></figure>
   <figure class="photo-item"><img src="photo-15.jpg" alt="Photograph 15" data-lb-srcs="photo-15.jpg" data-lb-labels="Photo 15"></figure>
@@ -503,6 +503,7 @@
   <figure class="photo-item landscape"><img src="photo-34.jpg" alt="Photograph 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
   <figure class="photo-item"><img src="photo-35.jpg" alt="Photograph 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
   <figure class="photo-item landscape"><img src="photo-36.jpg" alt="Photograph 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
+  <figure class="photo-item landscape"><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
 </div>
 </div>
 
@@ -546,6 +547,47 @@
   if (navPhotoLink){
     navPhotoLink.addEventListener('click', function(){ activateTab('panel-photo'); });
   }
+})();
+
+(function(){
+  // True masonry via fine-grained grid rows: each figure spans exactly
+  // enough row units to match its image's real rendered height (no gaps).
+  const ROW_UNIT = 8;
+  const GAP = 24;
+  const grid = document.getElementById('gallery');
+  if (!grid) return;
+
+  function layoutItem(item){
+    const img = item.querySelector('img');
+    if (!img || !img.naturalWidth) return;
+    const itemWidth = item.getBoundingClientRect().width;
+    if (!itemWidth) return;
+    const renderedHeight = itemWidth * (img.naturalHeight / img.naturalWidth);
+    const rowSpan = Math.ceil((renderedHeight + GAP) / (ROW_UNIT + GAP));
+    item.style.gridRowEnd = 'span ' + rowSpan;
+  }
+
+  function layoutAll(){
+    grid.querySelectorAll('figure').forEach(layoutItem);
+  }
+
+  grid.querySelectorAll('img').forEach(function(img){
+    if (img.complete && img.naturalWidth){
+      layoutItem(img.closest('figure'));
+    } else {
+      img.addEventListener('load', function(){ layoutItem(img.closest('figure')); });
+    }
+  });
+
+  window.addEventListener('load', layoutAll);
+  let resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layoutAll, 150);
+  });
+  document.getElementById('tabPhoto') && document.getElementById('tabPhoto').addEventListener('click', function(){
+    setTimeout(layoutAll, 50);
+  });
 })();
 
 (function(){
