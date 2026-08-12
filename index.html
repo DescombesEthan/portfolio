@@ -19,18 +19,6 @@
     --border:rgba(236,231,220,0.09);
     --border-strong:rgba(236,231,220,0.18);
   }
-  body.photo-mode{
-    --bg:#f7f5f0;
-    --surface:#ffffff;
-    --surface2:#efece4;
-    --fg:#1c1a15;
-    --fg-dim:#5b5648;
-    --fg-faint:#9b9484;
-    --accent:#a97c3f;
-    --accent-dim:#c39a5c;
-    --border:rgba(20,18,14,0.10);
-    --border-strong:rgba(20,18,14,0.18);
-  }
   body, nav, .hero, footer, .tab-panel, .project, .project-info, .gallery figure, .tabs{
     transition:background-color .5s ease, color .5s ease, border-color .5s ease;
   }
@@ -542,6 +530,7 @@
       <a href="mailto:e.descombes.pro@gmail.com">e.descombes.pro@gmail.com</a>
       <a href="#">LinkedIn ↗</a>
       <a href="#">ArtStation ↗</a>
+      <a href="https://www.instagram.com/ethann.dcb/" target="_blank" rel="noopener">Instagram ↗</a>
     </div>
     <div class="foot-meta">© 2026 Ethan Descombes — All rights reserved</div>
   </div>
@@ -567,7 +556,6 @@
   function activateTab(targetId){
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
     panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
-    document.body.classList.toggle('photo-mode', targetId === 'panel-photo');
     if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
       setTimeout(window.__layoutPhotoGrid, 50);
     }
