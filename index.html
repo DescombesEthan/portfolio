@@ -41,11 +41,17 @@
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--border);
   }
+  .nav-left{display:flex; align-items:center; gap:1.6rem;}
   .nav-mark{
     font-family:'Fraunces',serif; font-size:1.05rem; letter-spacing:0.02em;
     color:var(--fg); text-decoration:none;
   }
   .nav-mark span{color:var(--accent);}
+  .nav-contact-link{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--fg-dim); text-decoration:none; transition:color .25s;
+  }
+  .nav-contact-link:hover{color:var(--accent);}
   .nav-links{display:flex; gap:2.2rem; list-style:none;}
   .nav-links a{
     font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
@@ -88,8 +94,14 @@
   .hero-meta b{display:block; color:var(--fg-dim); font-size:0.72rem; margin-bottom:0.3rem; letter-spacing:0.05em;}
   .scroll-hint{
     position:absolute; bottom:2rem; right:clamp(1.5rem,5vw,3.5rem);
-    font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--fg-faint);
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent);
     writing-mode:vertical-rl;
+    display:flex; align-items:center; gap:0.6rem;
+    animation:scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce{
+    0%, 100%{ transform:translateY(0); opacity:0.7; }
+    50%{ transform:translateY(10px); opacity:1; }
   }
 
   /* ---------- SECTION HEADERS ---------- */
@@ -314,12 +326,13 @@
 <body>
 
 <nav>
-  <a href="#top" class="nav-mark">Ethan <span>Descombes</span></a>
+  <div class="nav-left">
+    <a href="#top" class="nav-mark">Ethan <span>Descombes</span></a>
+    <a href="#contact" class="nav-contact-link">Contact</a>
+  </div>
   <ul class="nav-links">
-    <li><a href="#travaux">Work</a></li>
-    <li><a href="#petit-dej">Extra</a></li>
+    <li><a href="#travaux">3D</a></li>
     <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -469,7 +482,6 @@
 </div>
 
 <div class="gallery" id="gallery">
-  <figure class="photo-item"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
   <figure class="photo-item"><img src="photo-10.jpg" alt="Photograph 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
   <figure class="photo-item landscape"><img src="photo-12.jpg" alt="Photograph 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
   <figure class="photo-item"><img src="photo-03.jpg" alt="Photograph 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
@@ -503,6 +515,7 @@
   <figure class="photo-item landscape"><img src="photo-34.jpg" alt="Photograph 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
   <figure class="photo-item"><img src="photo-35.jpg" alt="Photograph 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
   <figure class="photo-item landscape"><img src="photo-36.jpg" alt="Photograph 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
+  <figure class="photo-item"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
   <figure class="photo-item landscape"><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
 </div>
 </div>
@@ -539,6 +552,9 @@
   function activateTab(targetId){
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
     panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
+    if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
+      setTimeout(window.__layoutPhotoGrid, 50);
+    }
   }
   tabs.forEach(function(t){
     t.addEventListener('click', function(){ activateTab(t.dataset.target); });
@@ -570,6 +586,7 @@
   function layoutAll(){
     grid.querySelectorAll('figure').forEach(layoutItem);
   }
+  window.__layoutPhotoGrid = layoutAll;
 
   grid.querySelectorAll('img').forEach(function(img){
     if (img.complete && img.naturalWidth){
@@ -584,9 +601,6 @@
   window.addEventListener('resize', function(){
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(layoutAll, 150);
-  });
-  document.getElementById('tabPhoto') && document.getElementById('tabPhoto').addEventListener('click', function(){
-    setTimeout(layoutAll, 50);
   });
 })();
 
