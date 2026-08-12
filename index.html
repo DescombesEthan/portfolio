@@ -63,7 +63,7 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    min-height:100vh;
+    min-height:78vh;
     display:flex; flex-direction:column; justify-content:flex-end;
     position:relative;
     padding:clamp(1.5rem,5vw,3.5rem);
@@ -105,7 +105,7 @@
   }
 
   /* ---------- SECTION HEADERS ---------- */
-  .section{padding:6rem clamp(1.5rem,5vw,3.5rem);}
+  .section{padding:6rem clamp(1.5rem,5vw,3.5rem); scroll-margin-top:5.5rem;}
   .section-head{
     display:flex; justify-content:space-between; align-items:flex-end;
     margin-bottom:3rem; gap:2rem; flex-wrap:wrap;
@@ -133,7 +133,7 @@
   }
   .tab:hover{color:var(--fg-dim);}
   .tab.active{color:var(--fg); border-bottom-color:var(--accent);}
-  .tab-panel{display:none;}
+  .tab-panel{display:none; scroll-margin-top:5.5rem;}
   .tab-panel.active{display:block;}
 
   /* ---------- PROJECTS ---------- */
@@ -331,7 +331,7 @@
     <a href="#contact" class="nav-contact-link">Contact</a>
   </div>
   <ul class="nav-links">
-    <li><a href="#travaux">3D</a></li>
+    <li><a href="#travaux" id="nav3DLink">3D Work</a></li>
     <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
   </ul>
 </nav>
@@ -555,13 +555,29 @@
     if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
       setTimeout(window.__layoutPhotoGrid, 50);
     }
+    const targetPanel = document.getElementById(targetId);
+    if (targetPanel){
+      setTimeout(function(){
+        targetPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 60);
+    }
   }
   tabs.forEach(function(t){
     t.addEventListener('click', function(){ activateTab(t.dataset.target); });
   });
+  const nav3DLink = document.getElementById('nav3DLink');
+  if (nav3DLink){
+    nav3DLink.addEventListener('click', function(e){
+      e.preventDefault();
+      activateTab('panel-work');
+    });
+  }
   const navPhotoLink = document.getElementById('navPhotoLink');
   if (navPhotoLink){
-    navPhotoLink.addEventListener('click', function(){ activateTab('panel-photo'); });
+    navPhotoLink.addEventListener('click', function(e){
+      e.preventDefault();
+      activateTab('panel-photo');
+    });
   }
 })();
 
