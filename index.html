@@ -518,7 +518,7 @@
   <figure class="photo-item landscape"><img src="photo-34.jpg" alt="Photograph 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
   <figure class="photo-item"><img src="photo-35.jpg" alt="Photograph 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
   <figure class="photo-item landscape"><img src="photo-36.jpg" alt="Photograph 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
-  <figure class="photo-item"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
+  <figure class="photo-item landscape"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
   <figure class="photo-item landscape"><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
 </div>
 </div>
@@ -658,13 +658,30 @@
     document.body.style.overflow = '';
   }
 
-  document.querySelectorAll('[data-lb-srcs]').forEach(function(el){
+  // Project visuals (final/wireframe, view 1/2, single studies): local pair navigation
+  document.querySelectorAll('.project-visual[data-lb-srcs], .lb-single[data-lb-srcs]').forEach(function(el){
     el.addEventListener('click', function(){
       const srcs = el.getAttribute('data-lb-srcs').split('|');
       const labs = (el.getAttribute('data-lb-labels') || '').split('|');
       openLightbox(srcs, labs, 0);
     });
   });
+
+  // Gallery photos: browse the whole set with arrows, starting at the clicked photo
+  const galleryFigures = document.querySelectorAll('#gallery [data-lb-srcs]');
+  if (galleryFigures.length){
+    const gallerySrcs = Array.prototype.map.call(galleryFigures, function(el){
+      return el.getAttribute('data-lb-srcs');
+    });
+    const galleryLabs = Array.prototype.map.call(galleryFigures, function(el, i){
+      return 'Photo ' + (i + 1);
+    });
+    galleryFigures.forEach(function(el, i){
+      el.addEventListener('click', function(){
+        openLightbox(gallerySrcs, galleryLabs, i);
+      });
+    });
+  }
 
   lbPrev.addEventListener('click', function(e){ e.stopPropagation(); show(index - 1); });
   lbNext.addEventListener('click', function(e){ e.stopPropagation(); show(index + 1); });
