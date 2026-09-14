@@ -342,6 +342,16 @@
   .antre-view:focus-visible,.antre-stage:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
   .antre-hint{font-size:.65rem;color:var(--fg-dim);margin-top:1rem;}
 
+
+  .software-icons{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+  .software-icon{position:relative;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-strong);border-radius:4px;cursor:help;}
+  .software-icon img{display:block;object-fit:contain;filter:grayscale(1) brightness(1.5);opacity:.8;}
+  .software-icon img.software-vector{filter:invert(1);}
+  .software-icon:hover,.software-icon:focus-visible{border-color:var(--accent);outline:2px solid transparent;}
+  .software-icon:hover img,.software-icon:focus-visible img{opacity:1;}
+  .software-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:5;padding:.5rem .65rem;background:var(--fg);color:var(--bg);font-size:.65rem;white-space:nowrap;border-radius:3px;visibility:hidden;opacity:0;pointer-events:none;}
+  .software-icons li:first-child .software-tooltip{left:0;transform:none;}
+  .software-icon:hover .software-tooltip,.software-icon:focus .software-tooltip{visibility:visible;opacity:1;}
 </style>
 </head>
 <body>
@@ -389,6 +399,13 @@
       <div class="project-index">Environment — Lighting study</div>
       <h3 id="antre-title">L’Antre</h3>
       <p class="project-desc">For this project, I imagined Nathan Drake’s hideout, inspired by Uncharted — my favourite video game series and a world that deeply resonates with me. I explored the scene through two distinct atmospheres: day and night.</p>
+      <ul class="software-icons" aria-label="Software used">
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="28" height="28"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="28" height="28"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li>
+      </ul>
       <div class="antre-views" role="group" aria-label="L’Antre render views">
         <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
         <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
