@@ -334,7 +334,7 @@
   .antre-project{display:block;}
   .antre-project .project-info{gap:0;}
   .antre-stage{display:block;width:100%;padding:0;border:0;background:var(--surface);cursor:zoom-in;}
-  .antre-stage img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;}
+  .antre-stage img{display:block;width:100%;height:auto;max-height:calc(100svh - 8rem);object-fit:contain;}
   .antre-views{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem;}
   .antre-view{font:inherit;font-size:.75rem;padding:.7rem 1.1rem;background:transparent;border:1px solid var(--border-strong);color:var(--fg-dim);cursor:pointer;}
   .antre-view[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
@@ -352,6 +352,22 @@
   .software-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:5;padding:.5rem .65rem;background:var(--fg);color:var(--bg);font-size:.65rem;white-space:nowrap;border-radius:3px;visibility:hidden;opacity:0;pointer-events:none;}
   .software-icons li:first-child .software-tooltip{left:0;transform:none;}
   .software-icon:hover .software-tooltip,.software-icon:focus .software-tooltip{visibility:visible;opacity:1;}
+
+  /* Keep navigation above the image, with neutral controls and room to zoom. */
+  .lightbox{padding:1rem;}
+  .lightbox-inner{height:calc(100svh - 2rem);max-height:none;max-width:1600px;display:grid;grid-template-columns:3rem minmax(0,1fr) 3rem;grid-template-rows:2.5rem minmax(0,1fr) 2rem;gap:.6rem;}
+  .lightbox-img-wrap{grid-column:1 / -1;grid-row:2;height:100%;overflow:auto;display:block;text-align:center;align-content:center;overscroll-behavior:contain;}
+  .lightbox img{display:block;margin:auto;max-width:100%;max-height:100%;width:auto;height:auto;border:0;cursor:zoom-in;user-select:none;}
+  .lightbox-img-wrap.zoomed{align-content:start;}
+  .lightbox-img-wrap.zoomed img{max-width:none;max-height:none;margin:0;cursor:zoom-out;}
+  .lb-arrow,.lb-close,.lb-zoom{position:relative;inset:auto;transform:none;z-index:3;background:#242424;color:#ece7dc;border:1px solid #666;cursor:pointer;user-select:none;}
+  .lb-arrow:hover,.lb-close:hover,.lb-zoom:hover{color:#fff;background:#393939;border-color:#ddd;}
+  .lb-arrow:focus-visible,.lb-close:focus-visible,.lb-zoom:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .lb-prev{grid-column:1;grid-row:2;align-self:center;}
+  .lb-next{grid-column:3;grid-row:2;align-self:center;}
+  .lb-close{grid-column:3;grid-row:1;justify-self:end;}
+  .lb-zoom{grid-column:2;grid-row:1;justify-self:center;padding:.5rem 1rem;font:inherit;font-size:.75rem;}
+  .lightbox-label{grid-column:1 / -1;grid-row:3;text-align:center;color:#ece7dc;}
 </style>
 </head>
 <body>
@@ -589,8 +605,9 @@
   </div>
 </footer>
 
-<div class="lightbox" id="lightbox">
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
   <div class="lightbox-inner">
+    <button type="button" class="lb-zoom" id="lbZoom" aria-label="Zoom in" aria-pressed="false">Zoom +</button>
     <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
     <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous">←</button>
     <div class="lightbox-img-wrap">
@@ -685,12 +702,45 @@
   const lbNext = document.getElementById('lbNext');
   const lbClose = document.getElementById('lbClose');
 
+  const zoomButton = document.getElementById('lbZoom');
+  const imageWrap = lbImg.parentElement;
+  let returnFocus;
+  function resetZoom(){
+    imageWrap.classList.remove('zoomed');
+    lbImg.style.width = '';
+    lbImg.style.height = '';
+    imageWrap.scrollTop = imageWrap.scrollLeft = 0;
+    zoomButton.textContent = 'Zoom +';
+    zoomButton.setAttribute('aria-label', 'Zoom in');
+    zoomButton.setAttribute('aria-pressed', 'false');
+  }
+  function toggleZoom(event){
+    if(imageWrap.classList.contains('zoomed')){ resetZoom(); return; }
+    const rect = lbImg.getBoundingClientRect();
+    if(!lbImg.naturalWidth || !rect.width) return;
+    const x = event && event.target === lbImg ? (event.clientX - rect.left) / rect.width : .5;
+    const y = event && event.target === lbImg ? (event.clientY - rect.top) / rect.height : .5;
+    const width = Math.max(rect.width * 2, lbImg.naturalWidth);
+    const height = width * lbImg.naturalHeight / lbImg.naturalWidth;
+    imageWrap.classList.add('zoomed');
+    lbImg.style.width = width + 'px';
+    lbImg.style.height = height + 'px';
+    imageWrap.scrollLeft = x * width - imageWrap.clientWidth / 2;
+    imageWrap.scrollTop = y * height - imageWrap.clientHeight / 2;
+    zoomButton.textContent = 'Zoom −';
+    zoomButton.setAttribute('aria-label', 'Zoom out');
+    zoomButton.setAttribute('aria-pressed', 'true');
+  }
+  lbImg.addEventListener('click', toggleZoom);
+  zoomButton.addEventListener('click', toggleZoom);
+  window.addEventListener('resize', resetZoom);
   let images = [];
   let labels = [];
   let index = 0;
 
   function show(i){
-    index = (i + images.length) % images.length;
+    resetZoom();
+    index = ((i % images.length) + images.length) % images.length;
     lbImg.src = images[index];
     lbImg.alt = labels[index] || 'Enlarged image';
     lbLabel.textContent = labels[index] || '';
@@ -700,16 +750,20 @@
   }
 
   function openLightbox(srcs, labs, startIndex){
+    returnFocus = document.activeElement;
     images = srcs;
     labels = labs;
     lb.classList.add('open');
     document.body.style.overflow = 'hidden';
     show(startIndex || 0);
+    lbClose.focus();
   }
 
   function closeLightbox(){
+    resetZoom();
     lb.classList.remove('open');
     document.body.style.overflow = '';
+    if(returnFocus) returnFocus.focus();
   }
 
   // Project visuals (final/wireframe, view 1/2, single studies): local pair navigation
@@ -744,6 +798,13 @@
 
   document.addEventListener('keydown', function(e){
     if (!lb.classList.contains('open')) return;
+    if(e.key === 'Tab'){
+      const controls = [zoomButton, lbClose, lbPrev, lbNext].filter(el => !el.hidden);
+      const current = controls.indexOf(document.activeElement);
+      const next = (current + (e.shiftKey ? -1 : 1) + controls.length) % controls.length;
+      e.preventDefault(); controls[next].focus();
+    }
+    if (['ArrowLeft','ArrowRight','Escape'].includes(e.key)) e.preventDefault();
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') show(index - 1);
     if (e.key === 'ArrowRight') show(index + 1);
