@@ -368,6 +368,15 @@
   .lb-close{grid-column:3;grid-row:1;justify-self:end;}
   .lb-zoom{grid-column:2;grid-row:1;justify-self:center;padding:.5rem 1rem;font:inherit;font-size:.75rem;}
   .lightbox-label{grid-column:1 / -1;grid-row:3;text-align:center;color:#ece7dc;}
+
+  .project,.side-note{position:relative;padding-bottom:62px;}
+  .software-icons{position:absolute;right:1.2rem;bottom:1rem;margin:0;gap:.45rem;}
+  .software-icon{width:32px;height:32px;border:0;}
+  .software-icon img{width:22px;height:22px;}
+  .software-tooltip,.software-icons li:first-child .software-tooltip{left:auto;right:0;transform:none;}
+  .lightbox-img-wrap{touch-action:none;}
+  .lightbox-img-wrap.zoomed img{cursor:grab;}
+  .lightbox-img-wrap.dragging img{cursor:grabbing;}
 </style>
 </head>
 <body>
@@ -447,13 +456,7 @@
         A sailor sinks into depression after losing his best friend, right as a young
         crewmate joins him in the middle of the tragedy.
       </p>
-      <div class="project-specs">
-        <span class="spec-tag">Maya</span>
-        <span class="spec-tag">RenderMan</span>
-        <span class="spec-tag">Marvelous Designer</span>
-        <span class="spec-tag">Substance Painter</span>
-        <span class="spec-tag">Photoshop</span>
-      </div>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
     </div>
   </div>
 
@@ -471,12 +474,7 @@
         School project. I wanted to recreate a forger's desk, with fake passports of
         my friends as a nod.
       </p>
-      <div class="project-specs">
-        <span class="spec-tag">Maya</span>
-        <span class="spec-tag">RenderMan</span>
-        <span class="spec-tag">Substance Painter</span>
-        <span class="spec-tag">Photoshop</span>
-      </div>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
     </div>
   </div>
 
@@ -494,13 +492,7 @@
         A nod to Caravaggio, through one of his paintings and a very high-contrast
         image, in chiaroscuro. He's an artist I really admire.
       </p>
-      <div class="project-specs">
-        <span class="spec-tag">Maya</span>
-        <span class="spec-tag">RenderMan</span>
-        <span class="spec-tag">Marvelous Designer</span>
-        <span class="spec-tag">Substance Painter</span>
-        <span class="spec-tag">Photoshop</span>
-      </div>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
     </div>
   </div>
 
@@ -517,12 +509,7 @@
       <p class="project-desc">
         A purely technical exercise: the goal was to be as realistic as possible.
       </p>
-      <div class="project-specs">
-        <span class="spec-tag">Maya</span>
-        <span class="spec-tag">RenderMan</span>
-        <span class="spec-tag">Substance Painter</span>
-        <span class="spec-tag">Photoshop</span>
-      </div>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
     </div>
   </div>
 
@@ -537,12 +524,7 @@
     <p>The brief was to create a breakfast scene on a theme of our choice. I wanted to
     depict a seemingly ordinary morning routine, then break it with the presence of
     pills — one blue pill in particular.</p>
-    <div class="project-specs">
-      <span class="spec-tag">Maya</span>
-      <span class="spec-tag">RenderMan</span>
-      <span class="spec-tag">Substance Painter</span>
-      <span class="spec-tag">Photoshop</span>
-    </div>
+    <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
   </div>
 </div>
 </div>
@@ -705,35 +687,70 @@
   const zoomButton = document.getElementById('lbZoom');
   const imageWrap = lbImg.parentElement;
   let returnFocus;
+  let scale = 1, fitWidth = 0, fitHeight = 0, moved = false;
+  const pointers = new Map();
   function resetZoom(){
-    imageWrap.classList.remove('zoomed');
-    lbImg.style.width = '';
-    lbImg.style.height = '';
+    scale = 1; pointers.clear();
+    imageWrap.classList.remove('zoomed','dragging');
+    lbImg.style.width = lbImg.style.height = '';
     imageWrap.scrollTop = imageWrap.scrollLeft = 0;
     zoomButton.textContent = 'Zoom +';
-    zoomButton.setAttribute('aria-label', 'Zoom in');
-    zoomButton.setAttribute('aria-pressed', 'false');
+    zoomButton.setAttribute('aria-label','Zoom in');
+    zoomButton.setAttribute('aria-pressed','false');
   }
-  function toggleZoom(event){
-    if(imageWrap.classList.contains('zoomed')){ resetZoom(); return; }
-    const rect = lbImg.getBoundingClientRect();
-    if(!lbImg.naturalWidth || !rect.width) return;
-    const x = event && event.target === lbImg ? (event.clientX - rect.left) / rect.width : .5;
-    const y = event && event.target === lbImg ? (event.clientY - rect.top) / rect.height : .5;
-    const width = Math.max(rect.width * 2, lbImg.naturalWidth);
-    const height = width * lbImg.naturalHeight / lbImg.naturalWidth;
+  function zoomAt(next, clientX, clientY){
+    if(!lbImg.naturalWidth) return;
+    const rect = lbImg.getBoundingClientRect(), wrap = imageWrap.getBoundingClientRect();
+    if(scale === 1){fitWidth = rect.width; fitHeight = rect.height;}
+    const x = (clientX - rect.left) / rect.width, y = (clientY - rect.top) / rect.height;
+    next = Math.max(1, Math.min(6,next));
+    if(next <= 1.01){resetZoom();return;}
+    scale = next;
     imageWrap.classList.add('zoomed');
-    lbImg.style.width = width + 'px';
-    lbImg.style.height = height + 'px';
-    imageWrap.scrollLeft = x * width - imageWrap.clientWidth / 2;
-    imageWrap.scrollTop = y * height - imageWrap.clientHeight / 2;
-    zoomButton.textContent = 'Zoom −';
-    zoomButton.setAttribute('aria-label', 'Zoom out');
-    zoomButton.setAttribute('aria-pressed', 'true');
+    lbImg.style.width = fitWidth * scale + 'px';
+    lbImg.style.height = fitHeight * scale + 'px';
+    imageWrap.scrollLeft = x * fitWidth * scale - (clientX-wrap.left);
+    imageWrap.scrollTop = y * fitHeight * scale - (clientY-wrap.top);
+    zoomButton.textContent = Math.round(scale*100) + '% · Reset';
+    zoomButton.setAttribute('aria-label','Reset zoom');
+    zoomButton.setAttribute('aria-pressed','true');
   }
-  lbImg.addEventListener('click', toggleZoom);
-  zoomButton.addEventListener('click', toggleZoom);
-  window.addEventListener('resize', resetZoom);
+  function centerZoom(){const r=lbImg.getBoundingClientRect();zoomAt(2,r.left+r.width/2,r.top+r.height/2);}
+  lbImg.draggable = false;
+  lbImg.addEventListener('click',function(e){if(!moved && scale === 1) zoomAt(2,e.clientX,e.clientY);});
+  lbImg.addEventListener('dblclick',function(e){e.preventDefault();resetZoom();});
+  zoomButton.addEventListener('click',function(){if(scale>1)resetZoom();else centerZoom();});
+  imageWrap.addEventListener('wheel',function(e){e.preventDefault();zoomAt(scale*Math.exp(-e.deltaY*.002),e.clientX,e.clientY);},{passive:false});
+  imageWrap.addEventListener('pointerdown',function(e){
+    if(e.button !== 0) return;
+    moved = false;
+    pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    imageWrap.setPointerCapture(e.pointerId);
+    if(scale>1)imageWrap.classList.add('dragging');
+  });
+  imageWrap.addEventListener('pointermove',function(e){
+    const old=pointers.get(e.pointerId);if(!old)return;
+    const next={x:e.clientX,y:e.clientY};
+    if(Math.hypot(next.x-old.x,next.y-old.y)>2)moved=true;
+    if(pointers.size===2){
+      const other=[...pointers.entries()].find(([id])=>id!==e.pointerId)[1];
+      const before=Math.hypot(old.x-other.x,old.y-other.y);
+      const after=Math.hypot(next.x-other.x,next.y-other.y);
+      if(before>0)zoomAt(scale*after/before,(next.x+other.x)/2,(next.y+other.y)/2);
+    }else if(scale>1){imageWrap.scrollLeft-=next.x-old.x;imageWrap.scrollTop-=next.y-old.y;}
+    pointers.set(e.pointerId,next);
+  });
+  function endPointer(e){
+    const old=pointers.get(e.pointerId);
+    // Pointer capture sends the click to the wrapper; handle a stationary tap here.
+    if(old && !moved && pointers.size===1 && scale===1)zoomAt(2,e.clientX,e.clientY);
+    pointers.delete(e.pointerId);
+    if(!pointers.size)imageWrap.classList.remove('dragging');
+  }
+  imageWrap.addEventListener('pointerup',endPointer);
+  imageWrap.addEventListener('pointercancel',function(e){pointers.delete(e.pointerId);imageWrap.classList.remove('dragging');});
+  imageWrap.addEventListener('dblclick',function(e){e.preventDefault();resetZoom();});
+  window.addEventListener('resize',resetZoom);
   let images = [];
   let labels = [];
   let index = 0;
