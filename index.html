@@ -329,6 +329,19 @@
   .lb-prev{left:0.5rem;}
   .lb-next{right:0.5rem;}
   .lb-arrow[hidden]{display:none;}
+
+  /* L'Antre: day, night and clay views */
+  .antre-project{display:block;}
+  .antre-project .project-info{gap:0;}
+  .antre-stage{display:block;width:100%;padding:0;border:0;background:var(--surface);cursor:zoom-in;}
+  .antre-stage img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;}
+  .antre-views{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem;}
+  .antre-view{font:inherit;font-size:.75rem;padding:.7rem 1.1rem;background:transparent;border:1px solid var(--border-strong);color:var(--fg-dim);cursor:pointer;}
+  .antre-view[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+  .antre-view:hover{border-color:var(--accent);}
+  .antre-view:focus-visible,.antre-stage:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
+  .antre-hint{font-size:.65rem;color:var(--fg-dim);margin-top:1rem;}
+
 </style>
 </head>
 <body>
@@ -364,6 +377,27 @@
 <div class="tab-panel active" id="panel-work">
 
 <div class="projects">
+
+  <article class="project antre-project" id="antre" aria-labelledby="antre-title">
+    <button type="button" class="antre-stage lb-single" id="antreStage"
+      aria-label="Enlarge L’Antre — Day"
+      data-lb-srcs="images/antre-day.png|images/antre-night.png|images/antre-clay.png"
+      data-lb-labels="L’Antre — Day|L’Antre — Night|L’Antre — Clay" data-lb-start="0">
+      <img id="antreImage" src="images/antre-day.png" width="1920" height="1080" alt="L’Antre — daylight illuminates a seaplane and a wooden dock inside a coastal cave">
+    </button>
+    <div class="project-info">
+      <div class="project-index">Environment — Lighting study</div>
+      <h3 id="antre-title">L’Antre</h3>
+      <p class="project-desc">A hidden coastal cave, explored through daylight and moonlight. Two lighting moods, alongside a clay render revealing the scene’s forms.</p>
+      <div class="antre-views" role="group" aria-label="L’Antre render views">
+        <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
+        <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
+        <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
+      </div>
+      <p class="antre-hint">Select a view · Click the image to enlarge</p>
+    </div>
+  </article>
+
 
   <div class="project">
     <div class="project-visual slider"
@@ -641,6 +675,7 @@
   function show(i){
     index = (i + images.length) % images.length;
     lbImg.src = images[index];
+    lbImg.alt = labels[index] || 'Enlarged image';
     lbLabel.textContent = labels[index] || '';
     const multi = images.length > 1;
     lbPrev.hidden = !multi;
@@ -665,7 +700,7 @@
     el.addEventListener('click', function(){
       const srcs = el.getAttribute('data-lb-srcs').split('|');
       const labs = (el.getAttribute('data-lb-labels') || '').split('|');
-      openLightbox(srcs, labs, 0);
+      openLightbox(srcs, labs, Number(el.dataset.lbStart) || 0);
     });
   });
 
@@ -697,6 +732,30 @@
     if (e.key === 'ArrowRight') show(index + 1);
   });
 })();
+
+(function(){
+  const stage = document.getElementById('antreStage');
+  const img = document.getElementById('antreImage');
+  const sources = stage.dataset.lbSrcs.split('|');
+  const labels = stage.dataset.lbLabels.split('|');
+  const descriptions = [
+    'L’Antre — daylight illuminates a seaplane and a wooden dock inside a coastal cave',
+    'L’Antre — moonlight and warm lanterns illuminate the cave and seaplane',
+    'L’Antre — clay render showing the cave, dock and seaplane without final textures'
+  ];
+  const buttons = document.querySelectorAll('.antre-view');
+  buttons.forEach(function(button){
+    button.addEventListener('click', function(){
+      const i = Number(button.dataset.view);
+      img.src = sources[i];
+      img.alt = descriptions[i];
+      stage.dataset.lbStart = String(i);
+      stage.setAttribute('aria-label', 'Enlarge ' + labels[i]);
+      buttons.forEach(function(b){ b.setAttribute('aria-pressed', String(b === button)); });
+    });
+  });
+})();
+
 </script>
 
 </body>
