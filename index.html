@@ -386,6 +386,9 @@
   .lookdev-card h3{font-size:1.5rem;margin-bottom:.5rem;}
   .lookdev-card figcaption span{font-size:.65rem;color:var(--fg-dim);letter-spacing:.1em;text-transform:uppercase;}
   @media(max-width:760px){.lookdev-grid{grid-template-columns:1fr;gap:1.5rem;}}
+
+  .tabs{gap:clamp(1rem,4vw,2.5rem);}
+  @media(max-width:480px){.tabs{padding:0;}.tab{font-size:clamp(1.2rem,5.5vw,1.8rem);}}
 </style>
 </head>
 <body>
@@ -397,6 +400,7 @@
   </div>
   <ul class="nav-links">
     <li><a href="#travaux" id="nav3DLink">3D Work</a></li>
+    <li><a href="#travaux" id="navLookdevLink">LookDev</a></li>
     <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
   </ul>
 </nav>
@@ -414,6 +418,7 @@
 <section class="section" id="travaux">
   <div class="tabs">
     <button class="tab active" id="tabWork" data-target="panel-work">3D Work</button>
+    <button class="tab" id="tabLookdev" data-target="panel-lookdev">LookDev</button>
     <button class="tab" id="tabPhoto" data-target="panel-photo">Photo</button>
   </div>
 </section>
@@ -537,6 +542,10 @@
   </div>
 </div>
 
+
+</div>
+
+<div class="tab-panel" id="panel-lookdev">
 <section class="section lookdev-section" id="lookdev" aria-labelledby="lookdev-title">
   <div class="section-head"><h2 id="lookdev-title">LookDev</h2><span class="section-num">Materials &amp; lighting</span></div>
   <div class="lookdev-grid">
@@ -658,6 +667,7 @@
       activateTab('panel-work');
     });
   }
+  document.getElementById('navLookdevLink').addEventListener('click', function(e){e.preventDefault();activateTab('panel-lookdev');});
   const navPhotoLink = document.getElementById('navPhotoLink');
   if (navPhotoLink){
     navPhotoLink.addEventListener('click', function(e){
