@@ -406,6 +406,16 @@
 
   .antre-breakdown{display:block;width:100%;height:auto;max-height:calc(100svh - 8rem);aspect-ratio:16/9;object-fit:contain;background:#0c0b08;}
   .antre-stage[hidden],.antre-breakdown[hidden]{display:none;}
+
+  .antre-media{position:relative;}
+  .antre-arrow,.antre-enlarge{position:absolute;z-index:2;background:rgba(18,18,18,.85);color:#fff;border:1px solid #888;font:inherit;cursor:pointer;}
+  .antre-arrow{top:50%;transform:translateY(-50%);width:42px;height:46px;font-size:1.25rem;}
+  .antre-prev{left:.75rem;}.antre-next{right:.75rem;}
+  .antre-enlarge{top:.75rem;right:.75rem;padding:.6rem .8rem;font-size:.75rem;}
+  .antre-enlarge[hidden]{display:none;}
+  .antre-arrow:hover,.antre-enlarge:hover{background:#333;}
+  .antre-arrow:focus-visible,.antre-enlarge:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+  .antre-project>.antre-views{margin:0;padding:1rem clamp(1rem,3vw,2rem);background:var(--surface);border-bottom:1px solid var(--border);}
 </style>
 </head>
 <body>
@@ -451,6 +461,7 @@
 <div class="projects">
 
   <article class="project antre-project" id="antre" aria-labelledby="antre-title">
+    <div class="antre-media">
     <button type="button" class="antre-stage lb-single" id="antreStage"
       aria-label="Enlarge L’Antre — Day"
       data-lb-srcs="images/antre-day.png|images/antre-night.png|images/antre-clay.png"
@@ -461,6 +472,16 @@
       <source src="videos/antre-breakdown.mp4" type="video/mp4">
       <a href="videos/antre-breakdown.mp4">Watch the breakdown</a>
     </video>
+      <button type="button" class="antre-arrow antre-prev" id="antrePrev" aria-label="Previous view">←</button>
+      <button type="button" class="antre-arrow antre-next" id="antreNext" aria-label="Next view">→</button>
+      <button type="button" class="antre-enlarge" id="antreEnlarge" aria-label="Enlarge image">⤢ Zoom</button>
+    </div>
+      <div class="antre-views" role="group" aria-label="L’Antre render views">
+        <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
+        <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
+        <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
+        <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
+      </div>
     <div class="project-info">
       <div class="project-index">Environment — Lighting study</div>
       <h3 id="antre-title">L’Antre</h3>
@@ -472,13 +493,8 @@
         <li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li>
         <li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li>
       </ul>
-      <div class="antre-views" role="group" aria-label="L’Antre render views">
-        <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
-        <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
-        <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
-        <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
-      </div>
-      <p class="antre-hint">Select a view · Click the image to enlarge</p>
+
+      <p class="antre-hint">Use the arrows to browse · Zoom to explore</p>
     </div>
   </article>
 
@@ -604,6 +620,13 @@
         <a href="videos/grenade-lookdev.mp4">Watch the grenade look development video</a>
       </video>
       <figcaption><h3>Grenade</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Lamp look development" width="1920" height="1080">
+        <source src="videos/lamp-lookdev.mp4" type="video/mp4">
+        <a href="videos/lamp-lookdev.mp4">Watch the lamp look development video</a>
+      </video>
+      <figcaption><h3>Lamp</h3><span>Look development</span></figcaption>
     </figure>
   </div>
 </section>
@@ -927,6 +950,14 @@
     'L’Antre — clay render showing the cave, dock and seaplane without final textures'
   ];
   const buttons = document.querySelectorAll('.antre-view');
+  const enlarge = document.getElementById('antreEnlarge');
+  function navigateView(delta){
+    const current = Array.from(buttons).findIndex(button => button.getAttribute('aria-pressed') === 'true');
+    buttons[(current + delta + buttons.length) % buttons.length].click();
+  }
+  document.getElementById('antrePrev').addEventListener('click',function(){navigateView(-1);});
+  document.getElementById('antreNext').addEventListener('click',function(){navigateView(1);});
+  enlarge.addEventListener('click',function(){stage.click();});
   buttons.forEach(function(button){
     button.addEventListener('click', function(){
       const i = Number(button.dataset.view);
@@ -934,7 +965,8 @@
       const isVideo = i === 3;
       stage.hidden = isVideo;
       video.hidden = !isVideo;
-      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Select a view · Click the image to enlarge';
+      enlarge.hidden = isVideo;
+      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Use the arrows to browse · Zoom to explore';
       if (!isVideo) {
       img.src = sources[i];
       img.alt = descriptions[i];
