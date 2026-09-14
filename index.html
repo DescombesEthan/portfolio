@@ -377,6 +377,15 @@
   .lightbox-img-wrap{touch-action:none;}
   .lightbox-img-wrap.zoomed img{cursor:grab;}
   .lightbox-img-wrap.dragging img{cursor:grabbing;}
+
+  .lookdev-section{border-top:1px solid var(--border);}
+  .lookdev-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;}
+  .lookdev-card{min-width:0;background:var(--surface);border:1px solid var(--border-strong);}
+  .lookdev-card video{display:block;width:100%;height:auto;max-height:70svh;aspect-ratio:16/9;object-fit:contain;background:#0c0b08;}
+  .lookdev-card figcaption{padding:1.3rem 1.5rem;}
+  .lookdev-card h3{font-size:1.5rem;margin-bottom:.5rem;}
+  .lookdev-card figcaption span{font-size:.65rem;color:var(--fg-dim);letter-spacing:.1em;text-transform:uppercase;}
+  @media(max-width:760px){.lookdev-grid{grid-template-columns:1fr;gap:1.5rem;}}
 </style>
 </head>
 <body>
@@ -527,6 +536,26 @@
     <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
   </div>
 </div>
+
+<section class="section lookdev-section" id="lookdev" aria-labelledby="lookdev-title">
+  <div class="section-head"><h2 id="lookdev-title">LookDev</h2><span class="section-num">Materials &amp; lighting</span></div>
+  <div class="lookdev-grid">
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="AK-47 look development" width="1920" height="1080">
+        <source src="videos/ak47-lookdev.mp4" type="video/mp4">
+        <a href="videos/ak47-lookdev.mp4">Watch the AK-47 look development video</a>
+      </video>
+      <figcaption><h3>AK-47</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Rocket launcher look development" width="1920" height="1080">
+        <source src="videos/rocket-launcher-lookdev.mp4" type="video/mp4">
+        <a href="videos/rocket-launcher-lookdev.mp4">Watch the rocket launcher look development video</a>
+      </video>
+      <figcaption><h3>Rocket Launcher</h3><span>Look development</span></figcaption>
+    </figure>
+  </div>
+</section>
 </div>
 
 <div class="tab-panel" id="panel-photo">
@@ -606,6 +635,7 @@
   const tabs = document.querySelectorAll('.tab');
   const panels = document.querySelectorAll('.tab-panel');
   function activateTab(targetId){
+    document.querySelectorAll('video').forEach(function(video){video.pause();});
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
     panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
     if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
@@ -851,6 +881,13 @@
   });
 })();
 
+
+// Keep one look development video playing at a time.
+document.querySelectorAll('.lookdev-card video').forEach(function(video){
+  video.addEventListener('play',function(){
+    document.querySelectorAll('.lookdev-card video').forEach(function(other){if(other!==video)other.pause();});
+  });
+});
 </script>
 
 </body>
