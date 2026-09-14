@@ -962,6 +962,11 @@
   buttons.forEach(function(button){
     button.addEventListener('click', function(){
       const i = Number(button.dataset.view);
+      const media = document.querySelector('.antre-media');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        media.getAnimations().forEach(function(animation){animation.cancel();});
+        media.animate([{opacity:.2},{opacity:1}],{duration:420,easing:'ease-out'});
+      }
       video.pause();
       const isVideo = i === 3;
       stage.hidden = isVideo;
