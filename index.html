@@ -416,6 +416,13 @@
   .antre-arrow:hover,.antre-enlarge:hover{background:#333;}
   .antre-arrow:focus-visible,.antre-enlarge:focus-visible{outline:2px solid #fff;outline-offset:3px;}
   .antre-project>.antre-views{margin:0;padding:1rem clamp(1rem,3vw,2rem);background:var(--surface);border-bottom:1px solid var(--border);}
+
+  .antre-slider{display:block;}
+  #antreSlider{display:block;width:100%;margin:.5rem 0 1rem;accent-color:var(--accent);cursor:ew-resize;}
+  #antreSlider:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}
+  .antre-slider-labels{display:flex;justify-content:space-between;gap:.3rem;}
+  .antre-slider-labels .antre-view{padding:.4rem .3rem;border:0;background:transparent;color:var(--fg-dim);font-size:.7rem;}
+  .antre-slider-labels .antre-view[aria-pressed="true"]{color:var(--accent);text-decoration:underline;text-underline-offset:5px;}
 </style>
 </head>
 <body>
@@ -472,15 +479,15 @@
       <source src="videos/antre-breakdown.mp4" type="video/mp4">
       <a href="videos/antre-breakdown.mp4">Watch the breakdown</a>
     </video>
-      <button type="button" class="antre-arrow antre-prev" id="antrePrev" aria-label="Previous view">←</button>
-      <button type="button" class="antre-arrow antre-next" id="antreNext" aria-label="Next view">→</button>
-      <button type="button" class="antre-enlarge" id="antreEnlarge" aria-label="Enlarge image">⤢ Zoom</button>
     </div>
-      <div class="antre-views" role="group" aria-label="L’Antre render views">
-        <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
-        <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
-        <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
-        <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
+      <div class="antre-views antre-slider">
+        <input id="antreSlider" type="range" min="0" max="3" step="1" value="0" aria-label="Render view" aria-valuetext="Day">
+        <div class="antre-slider-labels">
+          <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
+          <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
+          <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
+          <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
+        </div>
       </div>
     <div class="project-info">
       <div class="project-index">Environment — Lighting study</div>
@@ -494,7 +501,7 @@
         <li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li>
       </ul>
 
-      <p class="antre-hint">Use the arrows to browse · Zoom to explore</p>
+      <p class="antre-hint">Slide to change view · Click the image to enlarge</p>
     </div>
   </article>
 
@@ -950,14 +957,8 @@
     'L’Antre — clay render showing the cave, dock and seaplane without final textures'
   ];
   const buttons = document.querySelectorAll('.antre-view');
-  const enlarge = document.getElementById('antreEnlarge');
-  function navigateView(delta){
-    const current = Array.from(buttons).findIndex(button => button.getAttribute('aria-pressed') === 'true');
-    buttons[(current + delta + buttons.length) % buttons.length].click();
-  }
-  document.getElementById('antrePrev').addEventListener('click',function(){navigateView(-1);});
-  document.getElementById('antreNext').addEventListener('click',function(){navigateView(1);});
-  enlarge.addEventListener('click',function(){stage.click();});
+  const slider = document.getElementById('antreSlider');
+  slider.addEventListener('input',function(){buttons[Number(slider.value)].click();});
   buttons.forEach(function(button){
     button.addEventListener('click', function(){
       const i = Number(button.dataset.view);
@@ -965,8 +966,9 @@
       const isVideo = i === 3;
       stage.hidden = isVideo;
       video.hidden = !isVideo;
-      enlarge.hidden = isVideo;
-      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Use the arrows to browse · Zoom to explore';
+      slider.value = String(i);
+      slider.setAttribute('aria-valuetext', button.textContent);
+      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Slide to change view · Click the image to enlarge';
       if (!isVideo) {
       img.src = sources[i];
       img.alt = descriptions[i];
