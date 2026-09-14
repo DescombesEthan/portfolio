@@ -389,6 +389,7 @@
 
   .tabs{gap:clamp(1rem,4vw,2.5rem);}
   @media(max-width:480px){.tabs{padding:0;}.tab{font-size:clamp(1.2rem,5.5vw,1.8rem);}}
+  .scroll-hint-arrow{writing-mode:horizontal-tb;display:inline-block;}
 </style>
 </head>
 <body>
@@ -412,7 +413,7 @@
     3D student, second year at ESMA Nantes, passionate and driven. Here, you can
     discover my work and my universe.
   </p>
-  <div class="scroll-hint">Scroll ↓</div>
+  <div class="scroll-hint"><span>Scroll</span><span class="scroll-hint-arrow" aria-hidden="true">↓</span></div>
 </section>
 
 <section class="section" id="travaux">
