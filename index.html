@@ -403,6 +403,9 @@
     .section-rail{left:50%;top:auto;bottom:max(.75rem,env(safe-area-inset-bottom));transform:translateX(-50%);flex-direction:row;gap:.15rem;max-width:calc(100vw - 1rem);}
     .section-rail button,.section-rail a{padding:.65rem .6rem;}
   }
+
+  .antre-breakdown{display:block;width:100%;height:auto;max-height:calc(100svh - 8rem);aspect-ratio:16/9;object-fit:contain;background:#0c0b08;}
+  .antre-stage[hidden],.antre-breakdown[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -454,6 +457,10 @@
       data-lb-labels="L’Antre — Day|L’Antre — Night|L’Antre — Clay" data-lb-start="0">
       <img id="antreImage" src="images/antre-day.png" width="1920" height="1080" alt="L’Antre — daylight illuminates a seaplane and a wooden dock inside a coastal cave">
     </button>
+    <video id="antreBreakdown" class="antre-breakdown" controls playsinline preload="metadata" hidden aria-label="L’Antre — Breakdown">
+      <source src="videos/antre-breakdown.mp4" type="video/mp4">
+      <a href="videos/antre-breakdown.mp4">Watch the breakdown</a>
+    </video>
     <div class="project-info">
       <div class="project-index">Environment — Lighting study</div>
       <h3 id="antre-title">L’Antre</h3>
@@ -469,6 +476,7 @@
         <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
         <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
         <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
+        <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
       </div>
       <p class="antre-hint">Select a view · Click the image to enlarge</p>
     </div>
@@ -902,6 +910,8 @@
 (function(){
   const stage = document.getElementById('antreStage');
   const img = document.getElementById('antreImage');
+  const video = document.getElementById('antreBreakdown');
+  const hint = document.querySelector('.antre-hint');
   const sources = stage.dataset.lbSrcs.split('|');
   const labels = stage.dataset.lbLabels.split('|');
   const descriptions = [
@@ -913,10 +923,17 @@
   buttons.forEach(function(button){
     button.addEventListener('click', function(){
       const i = Number(button.dataset.view);
+      video.pause();
+      const isVideo = i === 3;
+      stage.hidden = isVideo;
+      video.hidden = !isVideo;
+      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Select a view · Click the image to enlarge';
+      if (!isVideo) {
       img.src = sources[i];
       img.alt = descriptions[i];
       stage.dataset.lbStart = String(i);
       stage.setAttribute('aria-label', 'Enlarge ' + labels[i]);
+      }
       buttons.forEach(function(b){ b.setAttribute('aria-pressed', String(b === button)); });
     });
   });
