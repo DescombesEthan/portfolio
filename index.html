@@ -389,14 +389,6 @@
 
   .tabs{gap:clamp(1rem,4vw,2.5rem);}
   @media(max-width:480px){.tabs{padding:0;}.tab{font-size:clamp(1.2rem,5.5vw,1.8rem);}}
-
-  .antre-project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;}
-  .antre-renders{min-width:0;}
-  .antre-lookdev{min-width:0;padding:1.5rem;border-left:1px solid var(--border-strong);display:grid;gap:1.2rem;}
-  .antre-lookdev>h3{font-size:1.6rem;}
-  .antre-lookdev .lookdev-card figcaption{padding:.8rem 1rem;}
-  .antre-lookdev .lookdev-card h3{font-size:1.15rem;}
-  @media(max-width:859px){.antre-project{grid-template-columns:minmax(0,1fr);}.antre-lookdev{border-left:0;border-top:1px solid var(--border-strong);}}
 </style>
 </head>
 <body>
@@ -436,7 +428,6 @@
 <div class="projects">
 
   <article class="project antre-project" id="antre" aria-labelledby="antre-title">
-    <div class="antre-renders">
     <button type="button" class="antre-stage lb-single" id="antreStage"
       aria-label="Enlarge L’Antre — Day"
       data-lb-srcs="images/antre-day.png|images/antre-night.png|images/antre-clay.png"
@@ -461,24 +452,6 @@
       </div>
       <p class="antre-hint">Select a view · Click the image to enlarge</p>
     </div>
-    </div>
-    <aside class="antre-lookdev" aria-labelledby="antre-lookdev-title"><h3 id="antre-lookdev-title">LookDev</h3>
-
-    <figure class="lookdev-card">
-      <video controls playsinline preload="metadata" aria-label="AK-47 look development" width="1920" height="1080">
-        <source src="videos/ak47-lookdev.mp4" type="video/mp4">
-        <a href="videos/ak47-lookdev.mp4">Watch the AK-47 look development video</a>
-      </video>
-      <figcaption><h3>AK-47</h3><span>Look development</span></figcaption>
-    </figure>
-    <figure class="lookdev-card">
-      <video controls playsinline preload="metadata" aria-label="Rocket launcher look development" width="1920" height="1080">
-        <source src="videos/rocket-launcher-lookdev.mp4" type="video/mp4">
-        <a href="videos/rocket-launcher-lookdev.mp4">Watch the rocket launcher look development video</a>
-      </video>
-      <figcaption><h3>Rocket Launcher</h3><span>Look development</span></figcaption>
-    </figure>
-    </aside>
   </article>
 
 
