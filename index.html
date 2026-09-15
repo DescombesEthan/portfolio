@@ -427,8 +427,10 @@
   #antreSlider{appearance:none;-webkit-appearance:none;height:28px;border:1px solid var(--border-strong);border-radius:2px;background:var(--surface2);margin:.5rem 0 1rem;padding:0;}
   #antreSlider::-webkit-slider-runnable-track{height:26px;background:transparent;}
   #antreSlider::-moz-range-track{height:26px;background:transparent;}
-  #antreSlider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
-  #antreSlider::-moz-range-thumb{width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
+  #antreSlider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
+  #antreSlider::-moz-range-thumb{width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
+
+  #antreSlider{background:linear-gradient(to right,var(--accent-dim) 0%,var(--accent-dim) var(--progress,0%),var(--surface2) var(--progress,0%),var(--surface2) 100%);}
 </style>
 </head>
 <body>
@@ -487,7 +489,7 @@
     </video>
     </div>
       <div class="antre-views antre-slider">
-        <input id="antreSlider" type="range" min="0" max="3" step="1" value="0" aria-label="Render view" aria-valuetext="Day">
+        <input id="antreSlider" type="range" min="0" max="3" step="0.01" value="0" aria-label="Render view" aria-valuetext="Day">
         <div class="antre-slider-labels">
           <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
           <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
@@ -978,7 +980,15 @@
   ];
   const buttons = document.querySelectorAll('.antre-view');
   const slider = document.getElementById('antreSlider');
-  slider.addEventListener('input',function(){buttons[Number(slider.value)].click();});
+  function paintProgress(){slider.style.setProperty('--progress', (Number(slider.value)/3*100)+'%');}
+  let sliding = false;
+  slider.addEventListener('input',function(){
+    sliding = true;
+    const next = Math.round(Number(slider.value));
+    if(buttons[next].getAttribute('aria-pressed') !== 'true') buttons[next].click();
+    paintProgress(); sliding = false;
+  });
+  paintProgress();
   buttons.forEach(function(button){
     button.addEventListener('click', function(){
       const i = Number(button.dataset.view);
@@ -991,7 +1001,8 @@
       const isVideo = i === 3;
       stage.hidden = isVideo;
       video.hidden = !isVideo;
-      slider.value = String(i);
+      if(!sliding) slider.value = String(i);
+      paintProgress();
       slider.setAttribute('aria-valuetext', button.textContent);
       hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Slide to change view · Click the image to enlarge';
       if (!isVideo) {
