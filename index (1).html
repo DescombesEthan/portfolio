@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethan Descombes — 3D Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15130f;
+    --surface:#1d1a15;
+    --surface2:#242019;
+    --fg:#ece7dc;
+    --fg-dim:#928a78;
+    --fg-faint:#5c5648;
+    --accent:#c39a5c;
+    --accent-dim:#7a6640;
+    --border:rgba(236,231,220,0.09);
+    --border-strong:rgba(236,231,220,0.18);
+  }
+  body, nav, .hero, footer, .tab-panel, .project, .project-info, .gallery figure, .tabs{
+    transition:background-color .5s ease, color .5s ease, border-color .5s ease;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Mono',monospace;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent);color:var(--bg);}
+
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:400;letter-spacing:-0.01em;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:1.6rem clamp(1.5rem,5vw,3.5rem);
+    background:color-mix(in srgb, var(--bg) 75%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+    transition:background-color .5s ease, border-color .5s ease;
+  }
+  .nav-left{display:flex; align-items:center; gap:1.6rem;}
+  .nav-mark{
+    font-family:'Fraunces',serif; font-size:1.05rem; letter-spacing:0.02em;
+    color:var(--fg); text-decoration:none;
+  }
+  .nav-mark span{color:var(--accent);}
+  .nav-contact-link{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--fg-dim); text-decoration:none; transition:color .25s;
+  }
+  .nav-contact-link:hover{color:var(--accent);}
+  .nav-links{display:flex; gap:2.2rem; list-style:none;}
+  .nav-links a{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--fg-dim); text-decoration:none; transition:color .25s;
+  }
+  .nav-links a:hover{color:var(--accent);}
+  .nav-links{display:none;}
+  @media(min-width:720px){.nav-links{display:flex;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:78vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative;
+    padding:clamp(1.5rem,5vw,3.5rem);
+    background:
+      linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 55%, var(--bg) 100%),
+      url('images/antre-day.png') center center / cover no-repeat;
+  }
+  .hero-eyebrow{
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:#d9a85a; margin-bottom:1.2rem;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem,7vw,5.2rem);
+    line-height:1.02;
+    max-width:16ch;
+    color:#f6f3ec;
+  }
+  .hero h1 em{font-style:italic; color:#d9a85a; font-weight:300;}
+  .hero-sub{
+    margin-top:1.6rem; max-width:46ch;
+    font-size:0.92rem; line-height:1.7; color:rgba(246,243,236,0.78);
+  }
+  .hero-meta{
+    margin-top:2.6rem; display:flex; gap:2.5rem; flex-wrap:wrap;
+    font-size:0.68rem; letter-spacing:0.08em; color:var(--fg-faint);
+    text-transform:uppercase;
+  }
+  .hero-meta b{display:block; color:var(--fg-dim); font-size:0.72rem; margin-bottom:0.3rem; letter-spacing:0.05em;}
+  .scroll-hint{
+    position:absolute; bottom:2rem; right:clamp(1.5rem,5vw,3.5rem);
+    font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:#d9a85a;
+    writing-mode:vertical-rl;
+    display:flex; align-items:center; gap:0.6rem;
+    animation:scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce{
+    0%, 100%{ transform:translateY(0); opacity:0.7; }
+    50%{ transform:translateY(10px); opacity:1; }
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:6rem clamp(1.5rem,5vw,3.5rem); scroll-margin-top:5.5rem;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:3rem; gap:2rem; flex-wrap:wrap;
+    border-bottom:1px solid var(--border); padding-bottom:1.5rem;
+  }
+  .section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);}
+  .section-num{
+    font-size:0.7rem; color:var(--fg-faint); letter-spacing:0.12em;
+  }
+  .tabs{
+    display:flex; gap:2.5rem;
+    padding:0 clamp(1.5rem,5vw,3.5rem);
+    margin-bottom:3rem;
+    border-bottom:1px solid var(--border);
+  }
+  .tab{
+    background:none; border:none; cursor:pointer;
+    font-family:'Fraunces',serif; font-weight:400; letter-spacing:-0.01em;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    color:var(--fg-faint);
+    padding:0 0 1.5rem 0;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+    transition:color .25s, border-color .25s;
+  }
+  .tab:hover{color:var(--fg-dim);}
+  .tab.active{color:var(--fg); border-bottom-color:var(--accent);}
+  .tab-panel{display:none; scroll-margin-top:5.5rem;}
+  .tab-panel.active{display:block;}
+
+  /* ---------- PROJECTS ---------- */
+  .projects{display:flex; flex-direction:column; gap:clamp(2.5rem,5vw,5rem); padding:0 clamp(1.5rem,5vw,3.5rem);}
+  .project{
+    background:var(--bg);
+    display:grid; grid-template-columns:1fr;
+    gap:0;
+    border:1px solid var(--border);
+  }
+  @media(min-width:860px){
+    .project{grid-template-columns:1.15fr 1fr;}
+    .project.reverse{grid-template-columns:1fr 1.15fr;}
+    .project.reverse .project-visual{order:2;}
+    .project.reverse .project-info{order:1;}
+  }
+  .project-visual{
+    position:relative; overflow:hidden;
+    background:var(--surface); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    max-height:560px; min-height:320px;
+    padding:1.4rem;
+  }
+  .project-visual img{
+    display:block; width:auto; height:auto;
+    max-width:100%; max-height:528px;
+    transition:opacity .5s ease;
+  }
+  .project-visual .img-wire, .project-visual .img-b{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:contain; max-width:none; max-height:none;
+    padding:1.4rem;
+  }
+  .project-visual .img-wire{opacity:0;}
+  .project-visual:hover .img-wire{opacity:1;}
+  .project-visual:hover .img-final{opacity:0;}
+  .visual-tag{
+    position:absolute; bottom:1rem; left:1rem; z-index:2;
+    font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase;
+    background:rgba(21,19,15,0.7); color:var(--fg-dim);
+    padding:0.4rem 0.7rem; border:1px solid var(--border-strong);
+    pointer-events:none;
+  }
+  .project-info{
+    padding:clamp(1.8rem,4vw,3.2rem);
+    display:flex; flex-direction:column; justify-content:center;
+    background:var(--surface);
+  }
+  .project-index{font-size:0.7rem; color:var(--accent); letter-spacing:0.1em; margin-bottom:0.9rem;}
+  .project-info h3{font-size:clamp(1.5rem,2.6vw,2.1rem); margin-bottom:1rem;}
+  .project-desc{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:42ch;}
+  .project-specs{
+    margin-top:1.6rem; display:flex; flex-wrap:wrap; gap:0.6rem;
+  }
+  .spec-tag{
+    font-size:0.62rem; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--fg-faint); border:1px solid var(--border-strong);
+    padding:0.35rem 0.65rem;
+  }
+
+  /* two-image toggle project (cohabitation) */
+  .project-visual.slider .img-b{opacity:0;}
+  .project-visual.slider:hover .img-b{opacity:1;}
+  .project-visual.slider:hover .img-a{opacity:0;}
+
+  /* ---------- MISC GRID (petit-dej) ---------- */
+  .side-note{
+    padding:5rem clamp(1.5rem,5vw,3.5rem);
+    display:grid; grid-template-columns:1fr; gap:2.5rem;
+    border-top:1px solid var(--border);
+  }
+  @media(min-width:860px){.side-note{grid-template-columns:1fr 1fr; align-items:center;}}
+  .side-note img{width:100%; display:block; border:1px solid var(--border-strong);}
+  .side-note-text .project-index{color:var(--accent);}
+  .side-note-text h3{font-size:1.6rem; margin-bottom:0.8rem;}
+  .side-note-text p{font-size:0.85rem; line-height:1.75; color:var(--fg-dim); max-width:38ch;}
+  .side-note-text .project-specs{margin-top:1.4rem; display:flex; flex-wrap:wrap; gap:0.6rem;}
+
+  /* ---------- PHOTOGRAPHY ---------- */
+  .photo-hero{
+    min-height:82vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative;
+    padding:clamp(1.5rem,5vw,3.5rem);
+    margin-bottom:4rem;
+    background:
+      linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 65%, var(--bg) 100%),
+      url('photo-07.jpg') center 65% / cover no-repeat;
+  }
+  .photo-hero-eyebrow{
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:#d9a85a; margin-bottom:1.2rem;
+  }
+  .photo-hero h2{
+    font-size:clamp(2rem,6vw,4rem); line-height:1.03; color:#f6f3ec; max-width:16ch;
+  }
+  .photo-hero h2 em{font-style:italic; color:#d9a85a; font-weight:300;}
+  .photo-hero p{
+    margin-top:1.2rem; max-width:44ch;
+    font-size:0.88rem; line-height:1.7; color:rgba(246,243,236,0.78);
+  }
+
+  .gallery{
+    padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    grid-auto-flow:dense;
+    grid-auto-rows:8px;
+    gap:24px;
+  }
+  .gallery figure{
+    background:var(--surface);
+    overflow:hidden; cursor:pointer;
+    transition:box-shadow .35s ease;
+  }
+  .gallery figure:hover{
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  }
+  .gallery figure.landscape{grid-column:span 2;}
+  @media(max-width:640px){.gallery figure.landscape{grid-column:span 1;}}
+  .gallery img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease, opacity .3s ease;}
+  .gallery figure:hover img{transform:scale(1.02); opacity:0.92;}
+  .gallery-empty{
+    padding:0 clamp(1.5rem,5vw,3.5rem) 6rem;
+    color:var(--fg-faint); font-size:0.85rem;
+  }
+
+  /* ---------- CONTACT ---------- */
+  footer{
+    padding:6rem clamp(1.5rem,5vw,3.5rem) 3rem;
+    border-top:1px solid var(--border);
+    display:flex; flex-direction:column; gap:2.5rem;
+  }
+  footer h2{font-size:clamp(2rem,5vw,3.4rem); max-width:14ch;}
+  .contact-row{
+    display:flex; flex-wrap:wrap; gap:2.5rem; justify-content:space-between; align-items:flex-end;
+  }
+  .contact-links{display:flex; flex-direction:column; gap:0.6rem;}
+  .contact-links a{
+    color:var(--fg); text-decoration:none; font-size:0.95rem;
+    border-bottom:1px solid var(--border-strong); padding-bottom:0.15rem; width:fit-content;
+    transition:color .2s, border-color .2s;
+  }
+  .contact-links a:hover{color:var(--accent); border-color:var(--accent);}
+  .foot-meta{font-size:0.65rem; color:var(--fg-faint); letter-spacing:0.06em;}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:1000;
+    background:rgba(12,11,8,0.94);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:clamp(1rem,4vw,3rem);
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    position:relative; max-width:1400px; max-height:90vh;
+    width:100%; display:flex; flex-direction:column; align-items:center; gap:1rem;
+  }
+  .lightbox-img-wrap{
+    position:relative; width:100%; flex:1; min-height:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox img{
+    max-width:100%; max-height:78vh; object-fit:contain;
+    border:1px solid var(--border-strong);
+  }
+  .lightbox-label{
+    font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .lb-close{
+    position:absolute; top:-2.6rem; right:0;
+    background:none; border:1px solid var(--border-strong);
+    color:var(--fg); width:2.4rem; height:2.4rem; cursor:pointer;
+    font-size:1.1rem; font-family:'IBM Plex Mono',monospace;
+    transition:border-color .2s, color .2s;
+  }
+  .lb-close:hover{border-color:var(--accent); color:var(--accent);}
+  .lb-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background:rgba(21,19,15,0.55); border:1px solid var(--border-strong);
+    color:var(--fg); width:2.8rem; height:2.8rem; cursor:pointer;
+    font-size:1.2rem; font-family:'IBM Plex Mono',monospace;
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, color .2s, background .2s;
+  }
+  .lb-arrow:hover{border-color:var(--accent); color:var(--accent); background:rgba(21,19,15,0.85);}
+  .lb-prev{left:0.5rem;}
+  .lb-next{right:0.5rem;}
+  .lb-arrow[hidden]{display:none;}
+
+  /* L'Antre: day, night and clay views */
+  .antre-project{display:block;}
+  .antre-project .project-info{gap:0;}
+  .antre-stage{display:block;width:100%;padding:0;border:0;background:var(--surface);cursor:zoom-in;}
+  .antre-stage img{display:block;width:100%;height:auto;max-height:calc(100svh - 8rem);object-fit:contain;}
+  .antre-views{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem;}
+  .antre-view{font:inherit;font-size:.75rem;padding:.7rem 1.1rem;background:transparent;border:1px solid var(--border-strong);color:var(--fg-dim);cursor:pointer;}
+  .antre-view[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent);}
+  .antre-view:hover{border-color:var(--accent);}
+  .antre-view:focus-visible,.antre-stage:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
+  .antre-hint{font-size:.65rem;color:var(--fg-dim);margin-top:1rem;}
+
+
+  .software-icons{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
+  .software-icon{position:relative;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-strong);border-radius:4px;cursor:help;}
+  .software-icon img{display:block;object-fit:contain;filter:grayscale(1) brightness(1.5);opacity:.8;}
+  .software-icon img.software-vector{filter:invert(1);}
+  .software-icon:hover,.software-icon:focus-visible{border-color:var(--accent);outline:2px solid transparent;}
+  .software-icon:hover img,.software-icon:focus-visible img{opacity:1;}
+  .software-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:5;padding:.5rem .65rem;background:var(--fg);color:var(--bg);font-size:.65rem;white-space:nowrap;border-radius:3px;visibility:hidden;opacity:0;pointer-events:none;}
+  .software-icons li:first-child .software-tooltip{left:0;transform:none;}
+  .software-icon:hover .software-tooltip,.software-icon:focus .software-tooltip{visibility:visible;opacity:1;}
+
+  /* Keep navigation above the image, with neutral controls and room to zoom. */
+  .lightbox{padding:1rem;}
+  .lightbox-inner{height:calc(100svh - 2rem);max-height:none;max-width:1600px;display:grid;grid-template-columns:3rem minmax(0,1fr) 3rem;grid-template-rows:2.5rem minmax(0,1fr) 2rem;gap:.6rem;}
+  .lightbox-img-wrap{grid-column:1 / -1;grid-row:2;height:100%;overflow:auto;display:block;text-align:center;align-content:center;overscroll-behavior:contain;}
+  .lightbox img{display:block;margin:auto;max-width:100%;max-height:100%;width:auto;height:auto;border:0;cursor:zoom-in;user-select:none;}
+  .lightbox-img-wrap.zoomed{align-content:start;}
+  .lightbox-img-wrap.zoomed img{max-width:none;max-height:none;margin:0;cursor:zoom-out;}
+  .lb-arrow,.lb-close,.lb-zoom{position:relative;inset:auto;transform:none;z-index:3;background:#242424;color:#ece7dc;border:1px solid #666;cursor:pointer;user-select:none;}
+  .lb-arrow:hover,.lb-close:hover,.lb-zoom:hover{color:#fff;background:#393939;border-color:#ddd;}
+  .lb-arrow:focus-visible,.lb-close:focus-visible,.lb-zoom:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .lb-prev{grid-column:1;grid-row:2;align-self:center;}
+  .lb-next{grid-column:3;grid-row:2;align-self:center;}
+  .lb-close{grid-column:3;grid-row:1;justify-self:end;}
+  .lb-zoom{grid-column:2;grid-row:1;justify-self:center;padding:.5rem 1rem;font:inherit;font-size:.75rem;}
+  .lightbox-label{grid-column:1 / -1;grid-row:3;text-align:center;color:#ece7dc;}
+
+  .project,.side-note{position:relative;padding-bottom:62px;}
+  .software-icons{position:absolute;right:1.2rem;bottom:1rem;margin:0;gap:.45rem;}
+  .software-icon{width:32px;height:32px;border:0;}
+  .software-icon img{width:22px;height:22px;}
+  .software-tooltip,.software-icons li:first-child .software-tooltip{left:auto;right:0;transform:none;}
+  .lightbox-img-wrap{touch-action:none;}
+  .lightbox-img-wrap.zoomed img{cursor:grab;}
+  .lightbox-img-wrap.dragging img{cursor:grabbing;}
+
+  .lookdev-section{border-top:1px solid var(--border);}
+  .lookdev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;}
+  .lookdev-card{min-width:0;background:var(--surface);border:1px solid var(--border-strong);}
+  .lookdev-card video{display:block;width:100%;height:auto;max-height:70svh;aspect-ratio:16/9;object-fit:contain;background:#0c0b08;}
+  .lookdev-card figcaption{padding:1.3rem 1.5rem;}
+  .lookdev-card h3{font-size:1.5rem;margin-bottom:.5rem;}
+  .lookdev-card figcaption span{font-size:.65rem;color:var(--fg-dim);letter-spacing:.1em;text-transform:uppercase;}
+  @media(max-width:1100px){.lookdev-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media(max-width:640px){.lookdev-grid{grid-template-columns:1fr;}}
+
+  .tabs{gap:clamp(1rem,4vw,2.5rem);}
+  @media(max-width:480px){.tabs{padding:0;}.tab{font-size:clamp(1.2rem,5.5vw,1.8rem);}}
+  .scroll-hint-arrow{writing-mode:horizontal-tb;display:inline-block;}
+
+  .section-rail{position:fixed;left:1rem;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:.4rem;padding:.5rem;background:var(--surface);border:1px solid var(--border-strong);border-radius:6px;box-shadow:0 6px 24px #0003;}
+  .section-rail button,.section-rail a{display:block;background:transparent;border:1px solid transparent;color:var(--fg-dim);font:inherit;font-size:.68rem;text-decoration:none;text-align:left;padding:.75rem .6rem;cursor:pointer;white-space:nowrap;}
+  .section-rail button[aria-pressed="true"]{color:var(--accent);border-color:var(--accent-dim);}
+  .section-rail button:hover,.section-rail a:hover{color:var(--fg);}
+  .section-rail button:focus-visible,.section-rail a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media(min-width:1000px){body{padding-left:130px;}nav{left:130px;}}
+  @media(max-width:999px){
+    body{padding-bottom:85px;}
+    .section-rail{left:50%;top:auto;bottom:max(.75rem,env(safe-area-inset-bottom));transform:translateX(-50%);flex-direction:row;gap:.15rem;max-width:calc(100vw - 1rem);}
+    .section-rail button,.section-rail a{padding:.65rem .6rem;}
+  }
+
+  .antre-breakdown{display:block;width:100%;height:auto;max-height:calc(100svh - 8rem);aspect-ratio:16/9;object-fit:contain;background:#0c0b08;}
+  .antre-stage[hidden],.antre-breakdown[hidden]{display:none;}
+
+  .antre-media{position:relative;}
+  .antre-arrow,.antre-enlarge{position:absolute;z-index:2;background:rgba(18,18,18,.85);color:#fff;border:1px solid #888;font:inherit;cursor:pointer;}
+  .antre-arrow{top:50%;transform:translateY(-50%);width:42px;height:46px;font-size:1.25rem;}
+  .antre-prev{left:.75rem;}.antre-next{right:.75rem;}
+  .antre-enlarge{top:.75rem;right:.75rem;padding:.6rem .8rem;font-size:.75rem;}
+  .antre-enlarge[hidden]{display:none;}
+  .antre-arrow:hover,.antre-enlarge:hover{background:#333;}
+  .antre-arrow:focus-visible,.antre-enlarge:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+  .antre-project>.antre-views{margin:0;padding:1rem clamp(1rem,3vw,2rem);background:var(--surface);border-bottom:1px solid var(--border);}
+
+  .antre-slider{display:block;}
+  #antreSlider{display:block;width:100%;margin:.5rem 0 1rem;accent-color:var(--accent);cursor:ew-resize;}
+  #antreSlider:focus-visible{outline:2px solid var(--accent);outline-offset:5px;}
+  .antre-slider-labels{display:flex;justify-content:space-between;gap:.3rem;}
+  .antre-slider-labels .antre-view{padding:.4rem .3rem;border:0;background:transparent;color:var(--fg-dim);font-size:.7rem;}
+  .antre-slider-labels .antre-view[aria-pressed="true"]{color:var(--accent);text-decoration:underline;text-underline-offset:5px;}
+
+  #antreSlider{appearance:none;-webkit-appearance:none;height:28px;border:1px solid var(--border-strong);border-radius:2px;background:var(--surface2);margin:.5rem 0 1rem;padding:0;}
+  #antreSlider::-webkit-slider-runnable-track{height:26px;background:transparent;}
+  #antreSlider::-moz-range-track{height:26px;background:transparent;}
+  #antreSlider::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
+  #antreSlider::-moz-range-thumb{width:48px;height:26px;border:0;border-radius:1px;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='26' viewBox='0 0 48 26'%3E%3Cpath d='M14 13h20m-7-7 7 7-7 7' fill='none' stroke='%2315130f' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat;cursor:ew-resize;}
+
+  #antreSlider{background:linear-gradient(to right,var(--accent-dim) 0%,var(--accent-dim) var(--progress,0%),var(--surface2) var(--progress,0%),var(--surface2) 100%);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="#top" class="nav-mark">Ethan <span>Descombes</span></a>
+    <a href="#contact" class="nav-contact-link">Contact</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#travaux" id="nav3DLink">3D Work</a></li>
+    <li><a href="#travaux" id="navLookdevLink">LookDev</a></li>
+    <li><a href="#travaux" id="navFxLink">FX</a></li>
+    <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
+  </ul>
+</nav>
+
+<aside class="section-rail" aria-label="Portfolio sections">
+  <a href="#top" class="rail-home" aria-label="Back to top">↑</a>
+  <button type="button" data-panel="panel-work" aria-pressed="true">3D Work</button>
+  <button type="button" data-panel="panel-lookdev" aria-pressed="false">LookDev</button>
+  <button type="button" data-panel="panel-fx" aria-pressed="false">FX</button>
+  <button type="button" data-panel="panel-photo" aria-pressed="false">Photo</button>
+</aside>
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Portfolio — 3D Artist</div>
+  <h1>Welcome <em>to my world</em>.</h1>
+  <p class="hero-sub">
+    3D student, second year at ESMA Nantes, passionate and driven. Here, you can
+    discover my work and my universe.
+  </p>
+  <div class="scroll-hint"><span>Scroll</span><span class="scroll-hint-arrow" aria-hidden="true">↓</span></div>
+</section>
+
+<section class="section" id="travaux">
+  <div class="tabs">
+    <button class="tab active" id="tabWork" data-target="panel-work">3D Work</button>
+    <button class="tab" id="tabLookdev" data-target="panel-lookdev">LookDev</button>
+    <button class="tab" id="tabFx" data-target="panel-fx">FX</button>
+    <button class="tab" id="tabPhoto" data-target="panel-photo">Photo</button>
+  </div>
+</section>
+
+<div class="tab-panel active" id="panel-work">
+
+<div class="projects">
+
+  <article class="project antre-project" id="antre" aria-labelledby="antre-title">
+    <div class="antre-media">
+    <button type="button" class="antre-stage lb-single" id="antreStage"
+      aria-label="Enlarge L’Antre — Day"
+      data-lb-srcs="images/antre-day.png|images/antre-night.png|images/antre-clay.png"
+      data-lb-labels="L’Antre — Day|L’Antre — Night|L’Antre — Clay" data-lb-start="0">
+      <img id="antreImage" src="images/antre-day.png" width="1920" height="1080" alt="L’Antre — daylight illuminates a seaplane and a wooden dock inside a coastal cave">
+    </button>
+    <video id="antreBreakdown" class="antre-breakdown" controls playsinline preload="metadata" hidden aria-label="L’Antre — Breakdown">
+      <source src="videos/antre-breakdown.mp4" type="video/mp4">
+      <a href="videos/antre-breakdown.mp4">Watch the breakdown</a>
+    </video>
+    </div>
+      <div class="antre-views antre-slider">
+        <input id="antreSlider" type="range" min="0" max="3" step="0.01" value="0" aria-label="Render view" aria-valuetext="Day">
+        <div class="antre-slider-labels">
+          <button type="button" class="antre-view" data-view="0" aria-pressed="true">Day</button>
+          <button type="button" class="antre-view" data-view="1" aria-pressed="false">Night</button>
+          <button type="button" class="antre-view" data-view="2" aria-pressed="false">Clay</button>
+          <button type="button" class="antre-view" data-view="3" aria-pressed="false">Breakdown</button>
+        </div>
+      </div>
+    <div class="project-info">
+      <div class="project-index">Environment — Lighting study</div>
+      <h3 id="antre-title">L’Antre</h3>
+      <p class="project-desc">For this project, I imagined Nathan Drake’s hideout, inspired by Uncharted — my favourite video game series and a world that deeply resonates with me. I explored the scene through two distinct atmospheres: day and night.</p>
+      <ul class="software-icons" aria-label="Software used">
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="28" height="28"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="28" height="28"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li>
+        <li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="28" height="28" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li>
+      </ul>
+
+      <p class="antre-hint">Slide to change view · Click the image to enlarge</p>
+    </div>
+  </article>
+
+
+  <div class="project">
+    <div class="project-visual slider"
+      data-lb-srcs="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png|2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png"
+      data-lb-labels="View 1|View 2">
+      <img class="img-a" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_01.png" alt="Cohabitation colocation — vue 1">
+      <img class="img-b" src="2026_IFA_A2-3D2_DESCOMBES_Ethan_cohabitation-colocation_3D_Compo_02.png" alt="Le marin — vue 2">
+    </div>
+    <div class="project-info">
+      <div class="project-index">01 — Scene</div>
+      <h3>The Lost Sailor</h3>
+      <p class="project-desc">
+        End-of-first-year school project: create a 3D image declined into two framings.
+        A sailor sinks into depression after losing his best friend, right as a young
+        crewmate joins him in the middle of the tragedy.
+      </p>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
+    </div>
+  </div>
+
+  <div class="project reverse">
+    <div class="project-visual"
+      data-lb-srcs="BUREAU_FINAL.jpg|WIREFRAME.jpg"
+      data-lb-labels="Render|Wireframe">
+      <img class="img-final" src="BUREAU_FINAL.jpg" alt="Le bureau — rendu final">
+      <img class="img-wire" src="WIREFRAME.jpg" alt="Le bureau — wireframe">
+    </div>
+    <div class="project-info">
+      <div class="project-index">02 — Scene</div>
+      <h3>The Desk</h3>
+      <p class="project-desc">
+        School project. I wanted to recreate a forger's desk, with fake passports of
+        my friends as a nod.
+      </p>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
+    </div>
+  </div>
+
+  <div class="project">
+    <div class="project-visual"
+      data-lb-srcs="NATURE_MORTE_FINAL.jpg|NATURE_MORTE_WIREFRAME.jpg"
+      data-lb-labels="Render|Wireframe">
+      <img class="img-final" src="NATURE_MORTE_FINAL.jpg" alt="Bureau de détective — rendu final">
+      <img class="img-wire" src="NATURE_MORTE_WIREFRAME.jpg" alt="Bureau de détective — wireframe">
+    </div>
+    <div class="project-info">
+      <div class="project-index">03 — Still life</div>
+      <h3>Vanitas</h3>
+      <p class="project-desc">
+        A nod to Caravaggio, through one of his paintings and a very high-contrast
+        image, in chiaroscuro. He's an artist I really admire.
+      </p>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Marvelous Designer"><img src="images/software/marvelous.png" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">Marvelous Designer</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
+    </div>
+  </div>
+
+  <div class="project">
+    <div class="project-visual"
+      data-lb-srcs="COMPO_TENNIS.jpg|Wireframe_tennis.jpg"
+      data-lb-labels="Render|Wireframe">
+      <img class="img-final" src="COMPO_TENNIS.jpg" alt="Sneakers — rendu final">
+      <img class="img-wire" src="Wireframe_tennis.jpg" alt="Sneakers — wireframe">
+    </div>
+    <div class="project-info">
+      <div class="project-index">04 — Product</div>
+      <h3>Sneakers</h3>
+      <p class="project-desc">
+        A purely technical exercise: the goal was to be as realistic as possible.
+      </p>
+      <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="side-note" id="petit-dej">
+  <img src="PDJ_PBH.png" alt="Petit-déjeuner — rendu" class="lb-single"
+    data-lb-srcs="PDJ_PBH.png" data-lb-labels="Render" style="cursor:pointer;">
+  <div class="side-note-text">
+    <div class="project-index">05 — Study</div>
+    <h3>Breakfast</h3>
+    <p>The brief was to create a breakfast scene on a theme of our choice. I wanted to
+    depict a seemingly ordinary morning routine, then break it with the presence of
+    pills — one blue pill in particular.</p>
+    <ul class="software-icons" aria-label="Software used"><li><span class="software-icon" tabindex="0" role="img" aria-label="Maya"><img src="images/software/maya.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Maya</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="RenderMan"><img src="images/software/renderman.ico" alt="" width="22" height="22"><span class="software-tooltip" aria-hidden="true">RenderMan</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Substance Painter"><img src="images/software/painter.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Substance Painter</span></span></li><li><span class="software-icon" tabindex="0" role="img" aria-label="Photoshop"><img src="images/software/photoshop.svg" alt="" width="22" height="22" class="software-vector"><span class="software-tooltip" aria-hidden="true">Photoshop</span></span></li></ul>
+  </div>
+</div>
+
+
+</div>
+
+<div class="tab-panel" id="panel-lookdev">
+<section class="section lookdev-section" id="lookdev" aria-labelledby="lookdev-title">
+  <div class="section-head"><h2 id="lookdev-title">LookDev</h2><span class="section-num">Materials &amp; lighting</span></div>
+  <div class="lookdev-grid">
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="AK-47 look development" width="1920" height="1080">
+        <source src="videos/ak47-lookdev.mp4" type="video/mp4">
+        <a href="videos/ak47-lookdev.mp4">Watch the AK-47 look development video</a>
+      </video>
+      <figcaption><h3>AK-47</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Rocket launcher look development" width="1920" height="1080">
+        <source src="videos/rocket-launcher-lookdev.mp4" type="video/mp4">
+        <a href="videos/rocket-launcher-lookdev.mp4">Watch the rocket launcher look development video</a>
+      </video>
+      <figcaption><h3>Rocket Launcher</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Jewelry look development" width="1920" height="1080">
+        <source src="videos/jewelry-lookdev.mp4" type="video/mp4">
+        <a href="videos/jewelry-lookdev.mp4">Watch the jewelry look development video</a>
+      </video>
+      <figcaption><h3>Jewelry</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Grenade look development" width="1920" height="1080">
+        <source src="videos/grenade-lookdev.mp4" type="video/mp4">
+        <a href="videos/grenade-lookdev.mp4">Watch the grenade look development video</a>
+      </video>
+      <figcaption><h3>Grenade</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Lamp look development" width="1920" height="1080">
+        <source src="videos/lamp-lookdev.mp4" type="video/mp4">
+        <a href="videos/lamp-lookdev.mp4">Watch the lamp look development video</a>
+      </video>
+      <figcaption><h3>Lamp</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Plane look development" width="1920" height="1080">
+        <source src="videos/plane-lookdev.mp4" type="video/mp4">
+        <a href="videos/plane-lookdev.mp4">Watch the plane look development video</a>
+      </video>
+      <figcaption><h3>Plane</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Boat look development" width="1920" height="1080">
+        <source src="videos/boat-lookdev.mp4" type="video/mp4">
+        <a href="videos/boat-lookdev.mp4">Watch the boat look development video</a>
+      </video>
+      <figcaption><h3>Boat</h3><span>Look development</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="Wood look development" width="1920" height="1080">
+        <source src="videos/wood-lookdev.mp4" type="video/mp4">
+        <a href="videos/wood-lookdev.mp4">Watch the wood look development video</a>
+      </video>
+      <figcaption><h3>Wood</h3><span>Look development</span></figcaption>
+    </figure>
+  </div>
+</section>
+</div>
+
+<div class="tab-panel" id="panel-fx">
+<section class="section lookdev-section" id="fx" aria-labelledby="fx-title">
+  <div class="section-head"><h2 id="fx-title">FX</h2><span class="section-num">Simulation &amp; effects</span></div>
+  <div class="lookdev-grid">
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Solaris Workflow Practice" width="1920" height="1080">
+        <source src="videos/export_v05.mp4" type="video/mp4">
+        <a href="videos/export_v05.mp4">Watch Solaris Workflow Practice</a>
+      </video>
+      <figcaption><h3>Solaris Workflow Practice</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Disintegration Practice" width="1920" height="1080">
+        <source src="videos/movies_simple_des.mov" type="video/mp4">
+        <a href="videos/movies_simple_des.mov">Watch Disintegration Practice</a>
+      </video>
+      <figcaption><h3>Disintegration Practice</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Neural Network" width="1920" height="1080">
+        <source src="videos/neuralmovies_v01.mov" type="video/mp4">
+        <a href="videos/neuralmovies_v01.mov">Watch Neural Network</a>
+      </video>
+      <figcaption><h3>Neural Network</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+  </div>
+</section>
+</div>
+
+<div class="tab-panel" id="panel-photo">
+
+<div class="photo-hero">
+  <div class="photo-hero-eyebrow">Photography</div>
+  <h2>Somewhere <em>else</em>.</h2>
+  <p>A quieter side of what I see — travels and everyday light, away from 3D.</p>
+</div>
+
+<div class="gallery" id="gallery">
+  <figure class="photo-item"><img src="photo-10.jpg" alt="Photograph 10" data-lb-srcs="photo-10.jpg" data-lb-labels="Photo 10"></figure>
+  <figure class="photo-item landscape"><img src="photo-12.jpg" alt="Photograph 12" data-lb-srcs="photo-12.jpg" data-lb-labels="Photo 12"></figure>
+  <figure class="photo-item"><img src="photo-03.jpg" alt="Photograph 3" data-lb-srcs="photo-03.jpg" data-lb-labels="Photo 3"></figure>
+  <figure class="photo-item"><img src="photo-04.jpg" alt="Photograph 4" data-lb-srcs="photo-04.jpg" data-lb-labels="Photo 4"></figure>
+  <figure class="photo-item"><img src="photo-05.jpg" alt="Photograph 5" data-lb-srcs="photo-05.jpg" data-lb-labels="Photo 5"></figure>
+  <figure class="photo-item landscape"><img src="photo-06.jpg" alt="Photograph 6" data-lb-srcs="photo-06.jpg" data-lb-labels="Photo 6"></figure>
+  <figure class="photo-item landscape"><img src="photo-08.jpg" alt="Photograph 8" data-lb-srcs="photo-08.jpg" data-lb-labels="Photo 8"></figure>
+  <figure class="photo-item"><img src="photo-09.jpg" alt="Photograph 9" data-lb-srcs="photo-09.jpg" data-lb-labels="Photo 9"></figure>
+  <figure class="photo-item"><img src="photo-11.jpg" alt="Photograph 11" data-lb-srcs="photo-11.jpg" data-lb-labels="Photo 11"></figure>
+  <figure class="photo-item landscape"><img src="photo-13.jpg" alt="Photograph 13" data-lb-srcs="photo-13.jpg" data-lb-labels="Photo 13"></figure>
+  <figure class="photo-item"><img src="photo-14.jpg" alt="Photograph 14" data-lb-srcs="photo-14.jpg" data-lb-labels="Photo 14"></figure>
+  <figure class="photo-item"><img src="photo-15.jpg" alt="Photograph 15" data-lb-srcs="photo-15.jpg" data-lb-labels="Photo 15"></figure>
+  <figure class="photo-item landscape"><img src="photo-16.jpg" alt="Photograph 16" data-lb-srcs="photo-16.jpg" data-lb-labels="Photo 16"></figure>
+  <figure class="photo-item"><img src="photo-17.jpg" alt="Photograph 17" data-lb-srcs="photo-17.jpg" data-lb-labels="Photo 17"></figure>
+  <figure class="photo-item landscape"><img src="photo-18.jpg" alt="Photograph 18" data-lb-srcs="photo-18.jpg" data-lb-labels="Photo 18"></figure>
+  <figure class="photo-item landscape"><img src="photo-19.jpg" alt="Photograph 19" data-lb-srcs="photo-19.jpg" data-lb-labels="Photo 19"></figure>
+  <figure class="photo-item"><img src="photo-20.jpg" alt="Photograph 20" data-lb-srcs="photo-20.jpg" data-lb-labels="Photo 20"></figure>
+  <figure class="photo-item"><img src="photo-21.jpg" alt="Photograph 21" data-lb-srcs="photo-21.jpg" data-lb-labels="Photo 21"></figure>
+  <figure class="photo-item"><img src="photo-22.jpg" alt="Photograph 22" data-lb-srcs="photo-22.jpg" data-lb-labels="Photo 22"></figure>
+  <figure class="photo-item landscape"><img src="photo-23.jpg" alt="Photograph 23" data-lb-srcs="photo-23.jpg" data-lb-labels="Photo 23"></figure>
+  <figure class="photo-item landscape"><img src="photo-24.jpg" alt="Photograph 24" data-lb-srcs="photo-24.jpg" data-lb-labels="Photo 24"></figure>
+  <figure class="photo-item landscape"><img src="photo-25.jpg" alt="Photograph 25" data-lb-srcs="photo-25.jpg" data-lb-labels="Photo 25"></figure>
+  <figure class="photo-item landscape"><img src="photo-26.jpg" alt="Photograph 26" data-lb-srcs="photo-26.jpg" data-lb-labels="Photo 26"></figure>
+  <figure class="photo-item"><img src="photo-27.jpg" alt="Photograph 27" data-lb-srcs="photo-27.jpg" data-lb-labels="Photo 27"></figure>
+  <figure class="photo-item landscape"><img src="photo-28.jpg" alt="Photograph 28" data-lb-srcs="photo-28.jpg" data-lb-labels="Photo 28"></figure>
+  <figure class="photo-item landscape"><img src="photo-29.jpg" alt="Photograph 29" data-lb-srcs="photo-29.jpg" data-lb-labels="Photo 29"></figure>
+  <figure class="photo-item landscape"><img src="photo-30.jpg" alt="Photograph 30" data-lb-srcs="photo-30.jpg" data-lb-labels="Photo 30"></figure>
+  <figure class="photo-item landscape"><img src="photo-31.jpg" alt="Photograph 31" data-lb-srcs="photo-31.jpg" data-lb-labels="Photo 31"></figure>
+  <figure class="photo-item"><img src="photo-32.jpg" alt="Photograph 32" data-lb-srcs="photo-32.jpg" data-lb-labels="Photo 32"></figure>
+  <figure class="photo-item landscape"><img src="photo-33.jpg" alt="Photograph 33" data-lb-srcs="photo-33.jpg" data-lb-labels="Photo 33"></figure>
+  <figure class="photo-item landscape"><img src="photo-34.jpg" alt="Photograph 34" data-lb-srcs="photo-34.jpg" data-lb-labels="Photo 34"></figure>
+  <figure class="photo-item"><img src="photo-35.jpg" alt="Photograph 35" data-lb-srcs="photo-35.jpg" data-lb-labels="Photo 35"></figure>
+  <figure class="photo-item landscape"><img src="photo-36.jpg" alt="Photograph 36" data-lb-srcs="photo-36.jpg" data-lb-labels="Photo 36"></figure>
+  <figure class="photo-item landscape"><img src="photo-01.jpg" alt="Photograph 1" data-lb-srcs="photo-01.jpg" data-lb-labels="Photo 1"></figure>
+  <figure class="photo-item landscape"><img src="photo-02.jpg" alt="Photograph 2" data-lb-srcs="photo-02.jpg" data-lb-labels="Photo 2"></figure>
+</div>
+</div>
+
+<footer id="contact">
+  <h2>Let's talk about your next project.</h2>
+  <div class="contact-row">
+    <div class="contact-links">
+      <a href="mailto:e.descombes.pro@gmail.com">e.descombes.pro@gmail.com</a>
+      <a href="https://www.instagram.com/ethann.dcb/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+    <div class="foot-meta">© 2026 Ethan Descombes — All rights reserved</div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <div class="lightbox-inner">
+    <button type="button" class="lb-zoom" id="lbZoom" aria-label="Zoom in" aria-pressed="false">Zoom +</button>
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Previous">←</button>
+    <div class="lightbox-img-wrap">
+      <img id="lbImg" src="" alt="">
+    </div>
+    <button class="lb-arrow lb-next" id="lbNext" aria-label="Next">→</button>
+    <div class="lightbox-label" id="lbLabel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Tabs: 3D Work / Photo
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.tab-panel');
+  document.querySelectorAll('.section-rail [data-panel]').forEach(function(button){
+    button.addEventListener('click',function(){activateTab(button.dataset.panel);});
+  });
+  function activateTab(targetId){
+    document.querySelectorAll('.section-rail [data-panel]').forEach(function(button){button.setAttribute('aria-pressed',String(button.dataset.panel===targetId));});
+    document.querySelectorAll('video').forEach(function(video){video.pause();});
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
+    if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
+      setTimeout(window.__layoutPhotoGrid, 50);
+    }
+    const targetPanel = document.getElementById(targetId);
+    if (targetPanel){
+      setTimeout(function(){
+        targetPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 60);
+    }
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ activateTab(t.dataset.target); });
+  });
+  const nav3DLink = document.getElementById('nav3DLink');
+  if (nav3DLink){
+    nav3DLink.addEventListener('click', function(e){
+      e.preventDefault();
+      activateTab('panel-work');
+    });
+  }
+  document.getElementById('navLookdevLink').addEventListener('click', function(e){e.preventDefault();activateTab('panel-lookdev');});
+  document.getElementById('navFxLink').addEventListener('click', function(e){e.preventDefault();activateTab('panel-fx');});
+  const navPhotoLink = document.getElementById('navPhotoLink');
+  if (navPhotoLink){
+    navPhotoLink.addEventListener('click', function(e){
+      e.preventDefault();
+      activateTab('panel-photo');
+    });
+  }
+})();
+
+(function(){
+  // True masonry via fine-grained grid rows: each figure spans exactly
+  // enough row units to match its image's real rendered height (no gaps).
+  const ROW_UNIT = 8;
+  const GAP = 24;
+  const grid = document.getElementById('gallery');
+  if (!grid) return;
+
+  function layoutItem(item){
+    const img = item.querySelector('img');
+    if (!img || !img.naturalWidth) return;
+    const itemWidth = item.getBoundingClientRect().width;
+    if (!itemWidth) return;
+    const renderedHeight = itemWidth * (img.naturalHeight / img.naturalWidth);
+    const rowSpan = Math.ceil((renderedHeight + GAP) / (ROW_UNIT + GAP));
+    item.style.gridRowEnd = 'span ' + rowSpan;
+  }
+
+  function layoutAll(){
+    grid.querySelectorAll('figure').forEach(layoutItem);
+  }
+  window.__layoutPhotoGrid = layoutAll;
+
+  grid.querySelectorAll('img').forEach(function(img){
+    if (img.complete && img.naturalWidth){
+      layoutItem(img.closest('figure'));
+    } else {
+      img.addEventListener('load', function(){ layoutItem(img.closest('figure')); });
+    }
+  });
+
+  window.addEventListener('load', layoutAll);
+  let resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(layoutAll, 150);
+  });
+})();
+
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbLabel = document.getElementById('lbLabel');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+  const lbClose = document.getElementById('lbClose');
+
+  const zoomButton = document.getElementById('lbZoom');
+  const imageWrap = lbImg.parentElement;
+  let returnFocus;
+  let scale = 1, fitWidth = 0, fitHeight = 0, moved = false;
+  const pointers = new Map();
+  function resetZoom(){
+    scale = 1; pointers.clear();
+    imageWrap.classList.remove('zoomed','dragging');
+    lbImg.style.width = lbImg.style.height = '';
+    imageWrap.scrollTop = imageWrap.scrollLeft = 0;
+    zoomButton.textContent = 'Zoom +';
+    zoomButton.setAttribute('aria-label','Zoom in');
+    zoomButton.setAttribute('aria-pressed','false');
+  }
+  function zoomAt(next, clientX, clientY){
+    if(!lbImg.naturalWidth) return;
+    const rect = lbImg.getBoundingClientRect(), wrap = imageWrap.getBoundingClientRect();
+    if(scale === 1){fitWidth = rect.width; fitHeight = rect.height;}
+    const x = (clientX - rect.left) / rect.width, y = (clientY - rect.top) / rect.height;
+    next = Math.max(1, Math.min(6,next));
+    if(next <= 1.01){resetZoom();return;}
+    scale = next;
+    imageWrap.classList.add('zoomed');
+    lbImg.style.width = fitWidth * scale + 'px';
+    lbImg.style.height = fitHeight * scale + 'px';
+    imageWrap.scrollLeft = x * fitWidth * scale - (clientX-wrap.left);
+    imageWrap.scrollTop = y * fitHeight * scale - (clientY-wrap.top);
+    zoomButton.textContent = Math.round(scale*100) + '% · Reset';
+    zoomButton.setAttribute('aria-label','Reset zoom');
+    zoomButton.setAttribute('aria-pressed','true');
+  }
+  function centerZoom(){const r=lbImg.getBoundingClientRect();zoomAt(2,r.left+r.width/2,r.top+r.height/2);}
+  lbImg.draggable = false;
+  lbImg.addEventListener('click',function(e){if(!moved && scale === 1) zoomAt(2,e.clientX,e.clientY);});
+  lbImg.addEventListener('dblclick',function(e){e.preventDefault();resetZoom();});
+  zoomButton.addEventListener('click',function(){if(scale>1)resetZoom();else centerZoom();});
+  imageWrap.addEventListener('wheel',function(e){e.preventDefault();zoomAt(scale*Math.exp(-e.deltaY*.002),e.clientX,e.clientY);},{passive:false});
+  imageWrap.addEventListener('pointerdown',function(e){
+    if(e.button !== 0) return;
+    moved = false;
+    pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    imageWrap.setPointerCapture(e.pointerId);
+    if(scale>1)imageWrap.classList.add('dragging');
+  });
+  imageWrap.addEventListener('pointermove',function(e){
+    const old=pointers.get(e.pointerId);if(!old)return;
+    const next={x:e.clientX,y:e.clientY};
+    if(Math.hypot(next.x-old.x,next.y-old.y)>2)moved=true;
+    if(pointers.size===2){
+      const other=[...pointers.entries()].find(([id])=>id!==e.pointerId)[1];
+      const before=Math.hypot(old.x-other.x,old.y-other.y);
+      const after=Math.hypot(next.x-other.x,next.y-other.y);
+      if(before>0)zoomAt(scale*after/before,(next.x+other.x)/2,(next.y+other.y)/2);
+    }else if(scale>1){imageWrap.scrollLeft-=next.x-old.x;imageWrap.scrollTop-=next.y-old.y;}
+    pointers.set(e.pointerId,next);
+  });
+  function endPointer(e){
+    const old=pointers.get(e.pointerId);
+    // Pointer capture sends the click to the wrapper; handle a stationary tap here.
+    if(old && !moved && pointers.size===1 && scale===1)zoomAt(2,e.clientX,e.clientY);
+    pointers.delete(e.pointerId);
+    if(!pointers.size)imageWrap.classList.remove('dragging');
+  }
+  imageWrap.addEventListener('pointerup',endPointer);
+  imageWrap.addEventListener('pointercancel',function(e){pointers.delete(e.pointerId);imageWrap.classList.remove('dragging');});
+  imageWrap.addEventListener('dblclick',function(e){e.preventDefault();resetZoom();});
+  window.addEventListener('resize',resetZoom);
+  let images = [];
+  let labels = [];
+  let index = 0;
+
+  function show(i){
+    resetZoom();
+    index = ((i % images.length) + images.length) % images.length;
+    lbImg.src = images[index];
+    lbImg.alt = labels[index] || 'Enlarged image';
+    lbLabel.textContent = labels[index] || '';
+    const multi = images.length > 1;
+    lbPrev.hidden = !multi;
+    lbNext.hidden = !multi;
+  }
+
+  function openLightbox(srcs, labs, startIndex){
+    returnFocus = document.activeElement;
+    images = srcs;
+    labels = labs;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    show(startIndex || 0);
+    lbClose.focus();
+  }
+
+  function closeLightbox(){
+    resetZoom();
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+    if(returnFocus) returnFocus.focus();
+  }
+
+  // Project visuals (final/wireframe, view 1/2, single studies): local pair navigation
+  document.querySelectorAll('.project-visual[data-lb-srcs], .lb-single[data-lb-srcs]').forEach(function(el){
+    el.addEventListener('click', function(){
+      const srcs = el.getAttribute('data-lb-srcs').split('|');
+      const labs = (el.getAttribute('data-lb-labels') || '').split('|');
+      openLightbox(srcs, labs, Number(el.dataset.lbStart) || 0);
+    });
+  });
+
+  // Gallery photos: browse the whole set with arrows, starting at the clicked photo
+  const galleryFigures = document.querySelectorAll('#gallery [data-lb-srcs]');
+  if (galleryFigures.length){
+    const gallerySrcs = Array.prototype.map.call(galleryFigures, function(el){
+      return el.getAttribute('data-lb-srcs');
+    });
+    const galleryLabs = Array.prototype.map.call(galleryFigures, function(el, i){
+      return 'Photo ' + (i + 1);
+    });
+    galleryFigures.forEach(function(el, i){
+      el.addEventListener('click', function(){
+        openLightbox(gallerySrcs, galleryLabs, i);
+      });
+    });
+  }
+
+  lbPrev.addEventListener('click', function(e){ e.stopPropagation(); show(index - 1); });
+  lbNext.addEventListener('click', function(e){ e.stopPropagation(); show(index + 1); });
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLightbox(); });
+
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('open')) return;
+    if(e.key === 'Tab'){
+      const controls = [zoomButton, lbClose, lbPrev, lbNext].filter(el => !el.hidden);
+      const current = controls.indexOf(document.activeElement);
+      const next = (current + (e.shiftKey ? -1 : 1) + controls.length) % controls.length;
+      e.preventDefault(); controls[next].focus();
+    }
+    if (['ArrowLeft','ArrowRight','Escape'].includes(e.key)) e.preventDefault();
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') show(index - 1);
+    if (e.key === 'ArrowRight') show(index + 1);
+  });
+})();
+
+(function(){
+  const stage = document.getElementById('antreStage');
+  const img = document.getElementById('antreImage');
+  const video = document.getElementById('antreBreakdown');
+  const hint = document.querySelector('.antre-hint');
+  const sources = stage.dataset.lbSrcs.split('|');
+  const labels = stage.dataset.lbLabels.split('|');
+  const descriptions = [
+    'L’Antre — daylight illuminates a seaplane and a wooden dock inside a coastal cave',
+    'L’Antre — moonlight and warm lanterns illuminate the cave and seaplane',
+    'L’Antre — clay render showing the cave, dock and seaplane without final textures'
+  ];
+  const buttons = document.querySelectorAll('.antre-view');
+  const slider = document.getElementById('antreSlider');
+  function paintProgress(){slider.style.setProperty('--progress', (Number(slider.value)/3*100)+'%');}
+  let sliding = false;
+  slider.addEventListener('input',function(){
+    sliding = true;
+    const next = Math.round(Number(slider.value));
+    if(buttons[next].getAttribute('aria-pressed') !== 'true') buttons[next].click();
+    paintProgress(); sliding = false;
+  });
+  paintProgress();
+  buttons.forEach(function(button){
+    button.addEventListener('click', function(){
+      const i = Number(button.dataset.view);
+      const media = document.querySelector('.antre-media');
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        media.getAnimations().forEach(function(animation){animation.cancel();});
+        media.animate([{opacity:.2},{opacity:1}],{duration:420,easing:'ease-out'});
+      }
+      video.pause();
+      const isVideo = i === 3;
+      stage.hidden = isVideo;
+      video.hidden = !isVideo;
+      if(!sliding) slider.value = String(i);
+      paintProgress();
+      slider.setAttribute('aria-valuetext', button.textContent);
+      hint.textContent = isVideo ? 'Play the breakdown · Fullscreen available in the player' : 'Slide to change view · Click the image to enlarge';
+      if (!isVideo) {
+      img.src = sources[i];
+      img.alt = descriptions[i];
+      stage.dataset.lbStart = String(i);
+      stage.setAttribute('aria-label', 'Enlarge ' + labels[i]);
+      }
+      buttons.forEach(function(b){ b.setAttribute('aria-pressed', String(b === button)); });
+    });
+  });
+})();
+
+
+// Keep one look development video playing at a time.
+document.querySelectorAll('.lookdev-card video').forEach(function(video){
+  video.addEventListener('play',function(){
+    document.querySelectorAll('.lookdev-card video').forEach(function(other){if(other!==video)other.pause();});
+  });
+});
+</script>
+
+</body>
+</html>
