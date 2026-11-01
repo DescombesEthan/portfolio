@@ -75,6 +75,12 @@
       linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 55%, var(--bg) 100%),
       url('images/antre-day.png') center center / cover no-repeat;
   }
+  .hero{overflow:hidden;}
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;}
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(21,19,15,0.15) 0%, rgba(21,19,15,0.55) 55%, var(--bg) 100%);}
+  .hero > *:not(.hero-video){position:relative;z-index:2;}
+  .hero > .scroll-hint{position:absolute;}
+  @media(prefers-reduced-motion:reduce){.hero-video{display:none;}}
   .hero-eyebrow{
     font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
     color:#d9a85a; margin-bottom:1.2rem;
@@ -456,6 +462,9 @@
   <button type="button" data-panel="panel-photo" aria-pressed="false">Photo</button>
 </aside>
 <section class="hero" id="top">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="images/antre-day.png" aria-hidden="true">
+    <source src="videos/neuralmovies_v01.mov" type="video/mp4">
+  </video>
   <div class="hero-eyebrow">Portfolio — 3D Artist</div>
   <h1>Welcome <em>to my world</em>.</h1>
   <p class="hero-sub">
@@ -781,7 +790,7 @@
   });
   function activateTab(targetId){
     document.querySelectorAll('.section-rail [data-panel]').forEach(function(button){button.setAttribute('aria-pressed',String(button.dataset.panel===targetId));});
-    document.querySelectorAll('video').forEach(function(video){video.pause();});
+    document.querySelectorAll('video:not(.hero-video)').forEach(function(video){video.pause();});
     tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.target === targetId); });
     panels.forEach(function(p){ p.classList.toggle('active', p.id === targetId); });
     if (targetId === 'panel-photo' && window.__layoutPhotoGrid){
