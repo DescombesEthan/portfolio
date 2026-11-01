@@ -8,16 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#000000;
-    --surface:#0d0d0d;
-    --surface2:#171717;
-    --fg:#ffffff;
-    --fg-dim:#9a9a9a;
-    --fg-faint:#5c5c5c;
-    --accent:#ffffff;
-    --accent-dim:#777777;
-    --border:rgba(255,255,255,0.10);
-    --border-strong:rgba(255,255,255,0.22);
+    --bg:#ffffff;
+    --surface:#f2f2f2;
+    --surface2:#e6e6e6;
+    --fg:#000000;
+    --fg-dim:#5f5f5f;
+    --fg-faint:#9a9a9a;
+    --accent:#000000;
+    --accent-dim:#8a8a8a;
+    --border:rgba(0,0,0,0.12);
+    --border-strong:rgba(0,0,0,0.28);
   }
   body, nav, .hero, footer, .tab-panel, .project, .project-info, .gallery figure, .tabs{
     transition:background-color .5s ease, color .5s ease, border-color .5s ease;
@@ -72,7 +72,7 @@
     position:relative;
     padding:clamp(1.5rem,5vw,3.5rem);
     background:
-      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 55%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 55%, #000 100%),
       url('images/antre-night.png') center center / cover no-repeat;
   }
   .hero{overflow:hidden;}
@@ -225,7 +225,7 @@
     padding:clamp(1.5rem,5vw,3.5rem);
     margin-bottom:4rem;
     background:
-      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 65%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 65%, #000 100%),
       url('photo-07.jpg') center 65% / cover no-repeat;
   }
   .photo-hero-eyebrow{
@@ -286,6 +286,7 @@
   .foot-meta{font-size:0.65rem; color:var(--fg-faint); letter-spacing:0.06em;}
 
   /* ---------- LIGHTBOX ---------- */
+  .lightbox, .visual-tag{--fg:#ffffff;--fg-dim:#9a9a9a;--accent:#ffffff;--bg:#000000;--border-strong:rgba(255,255,255,0.22);}
   .lightbox{
     position:fixed; inset:0; z-index:1000;
     background:rgba(0,0,0,0.94);
@@ -346,8 +347,8 @@
 
   .software-icons{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.6rem;}
   .software-icon{position:relative;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-strong);border-radius:4px;cursor:help;}
-  .software-icon img{display:block;object-fit:contain;filter:grayscale(1) brightness(1.5);opacity:.8;}
-  .software-icon img.software-vector{filter:invert(1);}
+  .software-icon img{display:block;object-fit:contain;filter:grayscale(1) brightness(.35);opacity:.85;}
+  .software-icon img.software-vector{filter:none;}
   .software-icon:hover,.software-icon:focus-visible{border-color:var(--accent);outline:2px solid transparent;}
   .software-icon:hover img,.software-icon:focus-visible img{opacity:1;}
   .software-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:5;padding:.5rem .65rem;background:var(--fg);color:var(--bg);font-size:.65rem;white-space:nowrap;border-radius:3px;visibility:hidden;opacity:0;pointer-events:none;}
@@ -385,6 +386,9 @@
   .lookdev-card video{display:block;width:100%;height:auto;max-height:70svh;aspect-ratio:16/9;object-fit:contain;background:#000000;}
   .lookdev-card figcaption{padding:1.3rem 1.5rem;}
   .lookdev-card h3{font-size:1.5rem;margin-bottom:.5rem;}
+  #panel-fx .lookdev-card figcaption{position:relative;padding-bottom:2.4rem;}
+  .tutorial-credit{position:absolute;right:1rem;bottom:.7rem;font-size:.6rem;letter-spacing:.06em;color:var(--fg-faint);text-decoration:none;}
+  a.tutorial-credit:hover{color:var(--fg);text-decoration:underline;}
   .lookdev-card figcaption span{font-size:.65rem;color:var(--fg-dim);letter-spacing:.1em;text-transform:uppercase;}
   @media(max-width:1100px){.lookdev-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
   @media(max-width:640px){.lookdev-grid{grid-template-columns:1fr;}}
@@ -681,21 +685,21 @@
         <source src="videos/export_v05.mp4" type="video/mp4">
         <a href="videos/export_v05.mp4">Watch Solaris Workflow Practice</a>
       </video>
-      <figcaption><h3>Solaris Workflow Practice</h3><span>Simulation &amp; effects</span></figcaption>
+      <figcaption><h3>Solaris Workflow Practice</h3><span>Simulation &amp; effects</span><a class="tutorial-credit" href="https://voxyde.com" target="_blank" rel="noopener noreferrer">Tutorial from voxyde.com</a></figcaption>
     </figure>
     <figure class="lookdev-card">
       <video controls playsinline preload="metadata" aria-label="FX — Disintegration Practice" width="1920" height="1080">
         <source src="videos/movies_simple_des.mov" type="video/mp4">
         <a href="videos/movies_simple_des.mov">Watch Disintegration Practice</a>
       </video>
-      <figcaption><h3>Disintegration Practice</h3><span>Simulation &amp; effects</span></figcaption>
+      <figcaption><h3>Disintegration Practice</h3><span>Simulation &amp; effects</span><a class="tutorial-credit" href="https://voxyde.com" target="_blank" rel="noopener noreferrer">Tutorial from voxyde.com</a></figcaption>
     </figure>
     <figure class="lookdev-card">
       <video controls playsinline preload="metadata" aria-label="FX — Neural Network" width="1920" height="1080">
         <source src="videos/neuralmovies_v01.mov" type="video/mp4">
         <a href="videos/neuralmovies_v01.mov">Watch Neural Network</a>
       </video>
-      <figcaption><h3>Neural Network</h3><span>Simulation &amp; effects</span></figcaption>
+      <figcaption><h3>Neural Network</h3><span>Simulation &amp; effects</span><a class="tutorial-credit" href="https://voxyde.com" target="_blank" rel="noopener noreferrer">Tutorial from voxyde.com</a></figcaption>
     </figure>
   </div>
 </section>
