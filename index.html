@@ -782,6 +782,19 @@
 
 <script>
 (function(){
+  // Vidéo de couverture : 10x plus lente (0.1 = 10 % de la vitesse normale)
+  const HERO_SPEED = 0.1;
+  const heroVideo = document.querySelector('.hero-video');
+  if (heroVideo){
+    const setSpeed = function(){ heroVideo.playbackRate = HERO_SPEED; heroVideo.defaultPlaybackRate = HERO_SPEED; };
+    setSpeed();
+    ['loadedmetadata','loadeddata','play','playing','ratechange'].forEach(function(ev){
+      heroVideo.addEventListener(ev, function(){ if (heroVideo.playbackRate !== HERO_SPEED) setSpeed(); });
+    });
+  }
+})();
+
+(function(){
   // Tabs: 3D Work / Photo
   const tabs = document.querySelectorAll('.tab');
   const panels = document.querySelectorAll('.tab-panel');
