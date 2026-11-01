@@ -443,6 +443,7 @@
   <ul class="nav-links">
     <li><a href="#travaux" id="nav3DLink">3D Work</a></li>
     <li><a href="#travaux" id="navLookdevLink">LookDev</a></li>
+    <li><a href="#travaux" id="navFxLink">FX</a></li>
     <li><a href="#travaux" id="navPhotoLink">Photo</a></li>
   </ul>
 </nav>
@@ -451,6 +452,7 @@
   <a href="#top" class="rail-home" aria-label="Back to top">↑</a>
   <button type="button" data-panel="panel-work" aria-pressed="true">3D Work</button>
   <button type="button" data-panel="panel-lookdev" aria-pressed="false">LookDev</button>
+  <button type="button" data-panel="panel-fx" aria-pressed="false">FX</button>
   <button type="button" data-panel="panel-photo" aria-pressed="false">Photo</button>
 </aside>
 <section class="hero" id="top">
@@ -467,6 +469,7 @@
   <div class="tabs">
     <button class="tab active" id="tabWork" data-target="panel-work">3D Work</button>
     <button class="tab" id="tabLookdev" data-target="panel-lookdev">LookDev</button>
+    <button class="tab" id="tabFx" data-target="panel-fx">FX</button>
     <button class="tab" id="tabPhoto" data-target="panel-photo">Photo</button>
   </div>
 </section>
@@ -668,6 +671,35 @@
 </section>
 </div>
 
+<div class="tab-panel" id="panel-fx">
+<section class="section lookdev-section" id="fx" aria-labelledby="fx-title">
+  <div class="section-head"><h2 id="fx-title">FX</h2><span class="section-num">Simulation &amp; effects</span></div>
+  <div class="lookdev-grid">
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Solaris Workflow Practice" width="1920" height="1080">
+        <source src="videos/export_v05.mp4" type="video/mp4">
+        <a href="videos/export_v05.mp4">Watch Solaris Workflow Practice</a>
+      </video>
+      <figcaption><h3>Solaris Workflow Practice</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Disintegration Practice" width="1920" height="1080">
+        <source src="videos/movies_simple_des.mov" type="video/mp4">
+        <a href="videos/movies_simple_des.mov">Watch Disintegration Practice</a>
+      </video>
+      <figcaption><h3>Disintegration Practice</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+    <figure class="lookdev-card">
+      <video controls playsinline preload="metadata" aria-label="FX — Neural Network" width="1920" height="1080">
+        <source src="videos/neuralmovies_v01.mov" type="video/mp4">
+        <a href="videos/neuralmovies_v01.mov">Watch Neural Network</a>
+      </video>
+      <figcaption><h3>Neural Network</h3><span>Simulation &amp; effects</span></figcaption>
+    </figure>
+  </div>
+</section>
+</div>
+
 <div class="tab-panel" id="panel-photo">
 
 <div class="photo-hero">
@@ -773,6 +805,7 @@
     });
   }
   document.getElementById('navLookdevLink').addEventListener('click', function(e){e.preventDefault();activateTab('panel-lookdev');});
+  document.getElementById('navFxLink').addEventListener('click', function(e){e.preventDefault();activateTab('panel-fx');});
   const navPhotoLink = document.getElementById('navPhotoLink');
   if (navPhotoLink){
     navPhotoLink.addEventListener('click', function(e){
